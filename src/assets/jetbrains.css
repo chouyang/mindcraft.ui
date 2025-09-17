@@ -1,0 +1,36 @@
+@import './global.css';
+
+/* variables for window arrangement */
+:root {
+  --menubar-width: 100vw;
+  --menubar-height: 2rem;
+
+  --menubar-background-color: var(--vt-c-white-mute);
+  --menubar-text-color: var(--vt-c-black-mute);
+
+  --file-navigator-width: 17vw;
+  --file-navigator-height: calc(100vh - var(--menubar-height));
+  --file-navigator-top: var(--menubar-height);
+  --file-navigator-background-color: var(--vt-c-white-soft);
+  --file-navigator-text-color: var(--vt-c-black-soft);
+
+  --file-editor-width: calc(100vw - var(--file-navigator-width));
+  --file-editor-height: calc(100vh - var(--menubar-height));
+  --file-editor-top: var(--menubar-height);
+  --file-editor-left: var(--file-navigator-width);
+  --file-editor-background-color: var(--vt-c-white);
+  --file-editor-text-color: var(--vt-c-black);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --menubar-background-color: var(--vt-c-black-mute);
+    --menubar-text-color: var(--vt-c-white-mute);
+
+    --file-navigator-background-color: var(--vt-c-black-soft);
+    --file-navigator-text-color: var(--vt-c-white-soft);
+
+    --file-editor-background-color: var(--vt-c-black);
+    --file-editor-text-color: var(--vt-c-white-soft);
+  }
+}
