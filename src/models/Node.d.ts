@@ -1,12 +1,17 @@
+enum NodeType {
+  FOLDER = 'folder',
+  FILE = 'file' | 'article' | 'media' | 'other',
+}
+
 /**
  * Node represents a file or folder in the file tree
- * A file can be an article, a media file, or any kind of files
+ * A file can be an article, a media file, source code or any kind of files
  */
 type Node = {
   // File or folder name
   name: string
   // 'file' or 'folder'
-  type: 'file' | 'folder'
+  type: NodeType
   // Within an exhaustive set of file types
   icon: string
   // Full path from the root
@@ -22,6 +27,7 @@ type Node = {
   // For files, the content of the file
   content?: string
 
+  // metadata
   _prev?: Node
   _next?: Node
   _opened?: boolean

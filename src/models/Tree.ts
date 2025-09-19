@@ -34,6 +34,10 @@ export default class Tree implements Iterable<Node> {
   /** Initialize the tree with nodes data */
   constructor(nodes: Array<Node>) {
     this.traverse(nodes, undefined)
+    if (this.head?._lastChild) {
+      this.open(this.head._lastChild)
+      this.highlight(this.head._lastChild)
+    }
   }
 
   /** Traverse nodes recursively to set up relationships */
