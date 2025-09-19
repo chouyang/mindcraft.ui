@@ -26,6 +26,8 @@
   --file-node-highlighted-text-color: var(--vt-c-white);
   --file-node-highlighted-background-color: var(--vt-c-black);
   --file-node-caption-text-color: var(--vt-c-text-light-2);
+
+  --file-editor-index-text-color: var(--vt-c-text-light-2);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -42,5 +44,7 @@
     --file-node-highlighted-text-color: var(--vt-c-black);
     --file-node-highlighted-background-color: var(--vt-c-white-soft);
     --file-node-caption-text-color: var(--vt-c-text-dark-2);
+
+    --file-editor-index-text-color: var(--vt-c-text-dark-2);
   }
 }

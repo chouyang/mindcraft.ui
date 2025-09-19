@@ -1,23 +1,19 @@
-<script lang="ts" setup></script>
+<script lang="ts" setup>
+import { computed } from 'vue'
+import { useJetBrainsStore } from '@/stores/jetbrains'
 
+const jetBrainsStore = useJetBrainsStore()
+const lines = computed(() => {
+  if (!jetBrainsStore.openedFile?.content) return []
+
+  return jetBrainsStore.openedFile.content.split('\n')
+})
+</script>
 <template>
   <div class="file-editor">
-    <div class="line">
-      <div class="index">01</div>
-      <div class="code">Hello World</div>
-    </div>
-
-    <div class="line">
-      <div class="index">02</div>
-      <div class="code">
-        Hello World<br />
-        Hello World<br />
-      </div>
-    </div>
-
-    <div class="line">
-      <div class="index">03</div>
-      <div class="code">Hello World</div>
+    <div class="line" v-for="(line, index) in lines" :key="index">
+      <div class="index">{{ index }}</div>
+      <div class="code">{{ line }}</div>
     </div>
   </div>
 </template>
@@ -38,6 +34,8 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
+
+  overflow: auto;
 
   padding: 0.5rem;
 

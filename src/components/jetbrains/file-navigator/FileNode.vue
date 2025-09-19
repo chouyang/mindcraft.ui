@@ -11,11 +11,24 @@ const props = defineProps({
 
 const emit = defineEmits<{
   (e: 'selected', node: Node): void
+  (e: 'opened', node: Node): void
 }>()
 
 const indent = ref(props.node.indentation)
+const firstClick = ref(false)
 
-const selectNode = () => emit('selected', props.node)
+const selectNode = () => {
+  emit('selected', props.node)
+  if (firstClick.value) {
+    emit('opened', props.node)
+    firstClick.value = false
+    return
+  }
+  firstClick.value = true
+  setTimeout(() => {
+    firstClick.value = false
+  }, 400)
+}
 </script>
 
 <template>

@@ -1,5 +1,10 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { computed } from 'vue'
+import { useJetBrainsStore } from '@/stores/jetbrains'
+
+const jetBrainsStore = useJetBrainsStore()
+const node = computed(() => jetBrainsStore.openedFile)
 
 const fileHistoryDroppedDown = ref(false)
 </script>
@@ -19,7 +24,7 @@ const fileHistoryDroppedDown = ref(false)
 
     <!--  menubar history section  -->
     <div class="section history">
-      <div>File name</div>
+      <div>{{ node.name }}</div>
       <ul class="list" v-if="fileHistoryDroppedDown">
         <li class="item">History</li>
         <li class="item">History</li>

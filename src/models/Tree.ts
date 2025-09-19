@@ -1,4 +1,5 @@
 import type Node from './Node'
+import { useJetBrainsStore } from '@/stores/jetbrains.ts'
 
 /**
  * Tree structure to manage nodes
@@ -106,8 +107,7 @@ export default class Tree implements Iterable<Node> {
   /** Open a folder or file node */
   public open(node: Node) {
     if (node.type !== 'folder') {
-      // TODO show file in editor
-      console.log('Open file:', node.path)
+      useJetBrainsStore().open(node)
       return
     }
     node._opened = true
@@ -129,6 +129,18 @@ export default class Tree implements Iterable<Node> {
     // Link last child back to next node
     if (node._lastChild) {
       node._lastChild._next = next
+    }
+  }
+
+  public tryOpen(node: Node) {
+    if (node.type === 'folder') {
+      if (node._opened) {
+        this.close(node)
+      } else {
+        this.open(node)
+      }
+    } else {
+      useJetBrainsStore().open(node)
     }
   }
 }

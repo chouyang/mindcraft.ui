@@ -19,6 +19,8 @@ type Node = {
   indentation?: number
   // Child nodes (for folders only)
   children?: Array<Node>
+  // For files, the content of the file
+  content?: string
 
   _prev?: Node
   _next?: Node
