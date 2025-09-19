@@ -1,5 +1,4 @@
-<script lang="ts" setup>
-</script>
+<script lang="ts" setup></script>
 
 <template>
   <div class="file-editor">
@@ -40,7 +39,7 @@
   justify-content: flex-start;
   align-items: flex-start;
 
-  padding: .5rem;
+  padding: 0.5rem;
 
   & .line {
     display: flex;

@@ -8,9 +8,7 @@ const fileHistoryDroppedDown = ref(false)
   <div class="menubar">
     <!--  menubar menu section  -->
     <div class="section menu">
-      <div class="brand">
-        MindCraft
-      </div>
+      <div class="brand">MindCraft</div>
       <ul class="bar">
         <li class="item">File</li>
         <li class="item">Tools</li>
@@ -66,10 +64,9 @@ const fileHistoryDroppedDown = ref(false)
   & .menu {
     display: flex;
     flex-direction: row;
-    gap: 1rem;
+    gap: 0.5rem;
 
     & .brand {
-      color: var(--vt-c-white);
       font-weight: bold;
     }
 

@@ -2,7 +2,7 @@
 import '@/assets/jetbrains.css'
 
 import FileEditor from '@/components/jetbrains/FileEditor.vue'
-import FileNavigator from '@/components/jetbrains/FileNavigator.vue'
+import FileNavigator from '@/components/jetbrains/file-navigator/FileNavigator.vue'
 import MenuBar from '@/components/jetbrains/MenuBar.vue'
 </script>
 

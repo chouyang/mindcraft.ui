@@ -2,6 +2,8 @@
 
 /* variables for window arrangement */
 :root {
+  --global-light-height: 1rem;
+
   --menubar-width: 100vw;
   --menubar-height: 2rem;
 
@@ -20,6 +22,10 @@
   --file-editor-left: var(--file-navigator-width);
   --file-editor-background-color: var(--vt-c-white);
   --file-editor-text-color: var(--vt-c-black);
+
+  --file-node-highlighted-text-color: var(--vt-c-white);
+  --file-node-highlighted-background-color: var(--vt-c-black);
+  --file-node-caption-text-color: var(--vt-c-text-light-2);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,5 +38,9 @@
 
     --file-editor-background-color: var(--vt-c-black);
     --file-editor-text-color: var(--vt-c-white-soft);
+
+    --file-node-highlighted-text-color: var(--vt-c-black);
+    --file-node-highlighted-background-color: var(--vt-c-white-soft);
+    --file-node-caption-text-color: var(--vt-c-text-dark-2);
   }
 }

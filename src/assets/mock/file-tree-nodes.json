@@ -1,0 +1,121 @@
+[
+  {
+    "name": "mindcraft.ui",
+    "icon": "folder",
+    "type": "folder",
+    "path": "/",
+    "caption": "~/Workspace/starvale.io/mindcraft.ui",
+    "_opened": true,
+    "children": [
+      {
+        "name": "api",
+        "icon": "folder",
+        "type": "folder",
+        "path": "/mindcraft.ui",
+        "children": []
+      },
+      {
+        "name": "cmd",
+        "icon": "folder",
+        "type": "folder",
+        "path": "/mindcraft.ui",
+        "children": [
+          {
+            "name": "main.go",
+            "icon": "go",
+            "type": "file",
+            "path": "/mindcraft.ui/cmd/mindcraft"
+          },
+          {
+            "name": "wire.go",
+            "icon": "go",
+            "type": "file",
+            "path": "/mindcraft.ui/cmd/mindcraft"
+          },
+          {
+            "name": "wire_gen.go",
+            "icon": "go",
+            "type": "file",
+            "path": "/mindcraft.ui/cmd/mindcraft"
+          }
+        ]
+      },
+      {
+        "name": "mindcraft",
+        "icon": "folder",
+        "type": "folder",
+        "path": "/mindcraft.ui/cmd",
+        "children": []
+      },
+      {
+        "name": "configs",
+        "icon": "folder",
+        "type": "folder",
+        "path": "/mindcraft.ui",
+        "children": []
+      },
+      {
+        "name": "internal",
+        "icon": "folder",
+        "type": "folder",
+        "path": "/mindcraft.ui",
+        "children": []
+      },
+      {
+        "name": "third_party",
+        "icon": "folder",
+        "type": "folder",
+        "path": "/mindcraft.ui",
+        "children": []
+      },
+      {
+        "name": ".gitignore",
+        "icon": "file",
+        "type": "file",
+        "path": "/mindcraft.ui"
+      },
+      {
+        "name": "Dockerfile",
+        "icon": "file",
+        "type": "file",
+        "path": "/mindcraft.ui"
+      },
+      {
+        "name": "go.mod",
+        "icon": "file",
+        "type": "file",
+        "path": "/mindcraft.ui"
+      },
+      {
+        "name": "go.sum",
+        "icon": "file",
+        "type": "file",
+        "path": "/mindcraft.ui"
+      },
+      {
+        "name": "LICENSE",
+        "icon": "file",
+        "type": "file",
+        "path": "/mindcraft.ui"
+      },
+      {
+        "name": "Makefile",
+        "icon": "file",
+        "type": "file",
+        "path": "/mindcraft.ui"
+      },
+      {
+        "name": "openapi.yaml",
+        "icon": "file",
+        "type": "file",
+        "path": "/mindcraft.ui"
+      },
+      {
+        "name": "README.md",
+        "icon": "file",
+        "type": "file",
+        "path": "/mindcraft.ui"
+      }
+    ]
+  }
+]
