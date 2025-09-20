@@ -1,19 +1,27 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useJetBrainsStore } from '@/stores/jetbrains'
+import highlighter from 'highlight.js/lib/core'
+import typescript from 'highlight.js/lib/languages/typescript'
+import 'highlight.js/styles/vs.min.css'
+
+highlighter.registerLanguage('typescript', typescript)
 
 const jetBrainsStore = useJetBrainsStore()
 const lines = computed(() => {
   if (!jetBrainsStore.openedFile?.content) return []
+  const content = highlighter.highlight(jetBrainsStore.openedFile.content, {
+    language: 'typescript',
+  })
 
-  return jetBrainsStore.openedFile.content.split('\n')
+  return content.value.split('\n')
 })
 </script>
 <template>
   <div class="file-editor">
     <div class="line" v-for="(line, index) in lines" :key="index">
       <div class="index">{{ index }}</div>
-      <div class="code">{{ line }}</div>
+      <pre class="code-wrapper"><code class="code" v-html="line" /></pre>
     </div>
   </div>
 </template>
@@ -42,6 +50,8 @@ const lines = computed(() => {
   & .line {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
     gap: 1rem;
 
     & .index {
@@ -49,8 +59,9 @@ const lines = computed(() => {
       user-select: none;
     }
 
-    & .code {
-      color: var(--file-editor-code-text-color);
+    & .code-wrapper {
+      line-height: 1rem;
+      height: 1rem;
     }
   }
 }
