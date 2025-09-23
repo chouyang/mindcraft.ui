@@ -1,17 +1,17 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useJetBrainsStore } from '@/stores/jetbrains'
-import highlighter from 'highlight.js/lib/core'
-import typescript from 'highlight.js/lib/languages/typescript'
-import 'highlight.js/styles/vs.min.css'
 
-highlighter.registerLanguage('typescript', typescript)
+import highlighter from 'highlight.js'
+import 'highlight.js/styles/atom-one-dark.css'
 
 const jetBrainsStore = useJetBrainsStore()
+
+// Highlight the content, then split into lines
 const lines = computed(() => {
   if (!jetBrainsStore.openedFile?.content) return []
   const content = highlighter.highlight(jetBrainsStore.openedFile.content, {
-    language: 'typescript',
+    language: jetBrainsStore.language || 'plaintext',
   })
 
   return content.value.split('\n')
@@ -20,7 +20,7 @@ const lines = computed(() => {
 <template>
   <div class="file-editor">
     <div class="line" v-for="(line, index) in lines" :key="index">
-      <div class="index">{{ index }}</div>
+      <div class="index">{{ index + 1 }}</div>
       <pre class="code-wrapper"><code class="code" v-html="line" /></pre>
     </div>
   </div>
@@ -45,8 +45,6 @@ const lines = computed(() => {
 
   overflow: auto;
 
-  padding: 0.5rem;
-
   & .line {
     display: flex;
     flex-direction: row;
@@ -55,13 +53,22 @@ const lines = computed(() => {
     gap: 1rem;
 
     & .index {
-      color: var(--file-editor-index-text-color);
       user-select: none;
+
+      width: 2rem;
+      padding-right: 0.2rem;
+      text-align: right;
+      font-size: 0.8rem;
+      color: var(--file-editor-index-text-color);
     }
 
     & .code-wrapper {
       line-height: 1rem;
       height: 1rem;
+
+      tab-size: 4;
+
+      padding: 0 0.75rem;
     }
   }
 }

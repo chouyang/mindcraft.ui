@@ -14,9 +14,10 @@ const emit = defineEmits<{
   (e: 'opened', node: Node): void
 }>()
 
-const indent = ref(props.node.indentation)
-const firstClick = ref(false)
+const indent = ref(props.node.indent)
 
+// Handle single and double click
+const firstClick = ref(false)
 const selectNode = () => {
   emit('selected', props.node)
   if (firstClick.value) {
@@ -35,6 +36,7 @@ const selectNode = () => {
   <div
     @click.stop.prevent="selectNode"
     :class="{ highlighted: node._highlighted, 'file-node': true }"
+    :id="node._id"
   >
     <span class="arrow">
       {{ node.type === 'folder' ? (node._opened ? 'v' : '>') : '' }}
@@ -53,6 +55,9 @@ const selectNode = () => {
 .file-node {
   padding: 0.25rem 1rem 0.25rem calc(1.2rem * v-bind(indent));
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
   width: 100%;
 

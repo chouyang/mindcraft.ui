@@ -1,4 +1,4 @@
-enum NodeType {
+export enum NodeType {
   FOLDER = 'folder',
   FILE = 'file' | 'article' | 'media' | 'other',
 }
@@ -20,14 +20,13 @@ type Node = {
   caption?: string
   // File extension (for files only)
   extension?: string
-  // Level of indentation (for rendering purposes)
-  indentation?: number
-  // Child nodes (for folders only)
-  children?: Array<Node>
+  // Level of indent (for rendering purposes)
+  indent?: number
   // For files, the content of the file
   content?: string
 
   // metadata
+  _id?: string
   _prev?: Node
   _next?: Node
   _opened?: boolean
