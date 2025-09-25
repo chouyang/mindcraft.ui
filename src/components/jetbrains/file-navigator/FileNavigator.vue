@@ -13,7 +13,6 @@ jetBrainsStore.getChildren(fileTree.root as Node).then(() => {
   fileTree.highlight(fileTree.root?._lastChild as Node)
   fileTree.tryOpen(fileTree.root?._lastChild as Node)
 })
-
 </script>
 
 <template>

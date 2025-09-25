@@ -1,12 +1,12 @@
-import { computed, type Ref, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import type Node from '@/models/Node'
-import type { NodeType } from '@/models/Node'
 import api from '@/api/request.ts'
 import type { AxiosResponse } from 'axios'
 import Tree from '@/models/Tree'
 
 import languages from '@/models/Language'
+import roots from '@/stores/roots.ts'
 
 /**
  * Standard API response structure
@@ -31,26 +31,7 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
    */
   const tree = ref(
     // Create the Tree with some root nodes
-    new Tree([
-      {
-        name: 'mindcraft.nodes',
-        type: 'folder' as NodeType.FOLDER,
-        icon: 'folder',
-        path: '/',
-        caption: '~/Workspace/starvale.io/mindcraft.nodes',
-        indent: 0,
-        _opened: true,
-      },
-      {
-        name: 'mindcraft.ui',
-        type: 'folder' as NodeType.FOLDER,
-        icon: 'folder',
-        path: '/',
-        caption: '~/Workspace/starvale.io/mindcraft.ui',
-        indent: 0,
-        _opened: false,
-      },
-    ]),
+    new Tree(roots),
   )
 
   /**

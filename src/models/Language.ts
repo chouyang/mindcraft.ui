@@ -24,6 +24,7 @@ const Languages: Record<string, string> = {
   php: 'php',
   html: 'html',
   htm: 'html',
+  vue: 'html',
   css: 'css',
   scss: 'scss',
   less: 'less',

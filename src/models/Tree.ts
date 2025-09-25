@@ -214,7 +214,8 @@ export default class Tree implements Iterable<Node> {
    *
    * @returns void
    */
-  public async tryOpen(node: Node) {
+  public async tryOpen(node?: Node) {
+    if (!node) return
     if (node.type === 'folder') {
       if (node._opened) {
         this.close(node)
