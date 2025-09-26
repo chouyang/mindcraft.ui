@@ -1,8 +1,3 @@
-export enum NodeType {
-  FOLDER = 'folder',
-  FILE = 'file' | 'article' | 'media' | 'other',
-}
-
 /**
  * Node represents a file or folder in the file tree
  * A file can be an article, a media file, source code or any kind of files
@@ -10,8 +5,8 @@ export enum NodeType {
 type Node = {
   // File or folder name
   name: string
-  // 'file' or 'folder'
-  type: NodeType
+  // 'folder', 'text', 'binary', 'image', 'video', 'audio', etc.
+  type: string
   // Within an exhaustive set of file types
   icon: string
   // Full path from the root

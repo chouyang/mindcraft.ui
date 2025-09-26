@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import '@/assets/jetbrains.css'
 
-import FileEditor from '@/components/jetbrains/FileEditor.vue'
 import FileNavigator from '@/components/jetbrains/file-navigator/FileNavigator.vue'
 import MenuBar from '@/components/jetbrains/MenuBar.vue'
+import EditorWindow from '@/components/jetbrains/EditorWindow.vue'
 </script>
 
 <template>
@@ -12,7 +12,7 @@ import MenuBar from '@/components/jetbrains/MenuBar.vue'
   </header>
   <main>
     <FileNavigator />
-    <FileEditor />
+    <EditorWindow />
   </main>
 </template>
 

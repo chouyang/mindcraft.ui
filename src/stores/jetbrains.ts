@@ -18,13 +18,23 @@ export type Response<T> = {
 }
 
 /**
- * Store to manage JetBrains-like file navigator and editor state
+ * Store to manage JetBrains-like IDE states
  */
 export const useJetBrainsStore = defineStore('jetbrains', () => {
   /**
    * @var openedFile Currently opened file in the editor
    */
   const openedFile = ref({} as Node)
+
+  /**
+   * @var editedContent Current content being edited (separate from openedFile.content)
+   */
+  const editedContent = ref('')
+
+  /**
+   * @var isDirty Whether the current content has unsaved changes
+   */
+  const isDirty = ref(false)
 
   /**
    * @var tree File tree structure
@@ -56,6 +66,7 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
   async function getDetail(file: Node): Promise<AxiosResponse<Response<Node>>> {
     if (file.content) {
       openedFile.value = file
+      initializeEditor()
       return Promise.resolve({
         data: {
           code: 0,
@@ -82,6 +93,7 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
             file.content = n.content
             file.extension = n.extension
             file.caption = n.caption
+            initializeEditor()
           }
         }
 
@@ -113,11 +125,62 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
       })
   }
 
+  /**
+   * Update the edited content and mark as dirty
+   *
+   * @param content New content to set
+   */
+  function updateContent(content: string) {
+    editedContent.value = content
+    isDirty.value = content !== openedFile.value.content
+  }
+
+  /**
+   * Save the current edited content to the file
+   *
+   * @return Promise resolving to the API response
+   */
+  async function saveContent(): Promise<AxiosResponse<Response<Node>>> {
+    if (!openedFile.value.name) {
+      return Promise.reject(new Error('No file opened'))
+    }
+
+    return api
+      .request({
+        url: `/v1/node${openedFile.value.path}/${openedFile.value.name}`.replace('//', '/'),
+        method: 'PUT',
+        data: {
+          content: editedContent.value,
+        },
+      })
+      .then((response: AxiosResponse<Response<Node>>): AxiosResponse<Response<Node>> => {
+        if (response.data.code === 0) {
+          // Update the opened file content and mark as clean
+          openedFile.value.content = editedContent.value
+          isDirty.value = false
+        }
+        return response
+      })
+  }
+
+  /**
+   * Initialize editor content when a file is opened
+   */
+  function initializeEditor() {
+    editedContent.value = openedFile.value.content || ''
+    isDirty.value = false
+  }
+
   return {
     openedFile,
+    editedContent,
+    isDirty,
     language,
     tree,
     getDetail,
     getChildren,
+    updateContent,
+    saveContent,
+    initializeEditor,
   }
 })

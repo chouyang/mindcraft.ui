@@ -47,6 +47,7 @@ const fileHistoryDroppedDown = ref(false)
 
   color: var(--menubar-text-color);
   background-color: var(--menubar-background-color);
+  border: 1px solid var(--global-border-color);
 
   position: fixed;
   top: 0;

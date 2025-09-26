@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type Node from '@/models/Node.d.ts'
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import Icon from '@/models/Icon.ts'
 
 const props = defineProps({
@@ -15,6 +15,7 @@ const emit = defineEmits<{
   (e: 'opened', node: Node): void
 }>()
 
+// Indentation based on tree depth
 const indent = ref(props.node.indent)
 
 // Handle single and double click
@@ -31,6 +32,17 @@ const selectNode = () => {
     firstClick.value = false
   }, 400)
 }
+
+// Auto-focus when highlighted with keyboard
+const focusable = ref<HTMLElement | null>(null)
+watch(
+  () => props.node._highlighted,
+  (newVal) => {
+    if (newVal && focusable.value) {
+      focusable.value.focus()
+    }
+  },
+)
 </script>
 
 <template>
@@ -38,10 +50,17 @@ const selectNode = () => {
     @click.stop.prevent="selectNode"
     :class="{ highlighted: node._highlighted, 'file-node': true }"
     :id="node._id"
+    :tabindex="node._highlighted ? 0 : -1"
+    ref="focusable"
   >
     <span
+      @click.stop.prevent="emit('opened', node)"
       class="arrow"
-      :style="node.type === 'folder' ? `background: url('${Icon(node._opened ? 'fold' : 'unfold')}') no-repeat center;` : ''"
+      :style="
+        node.type === 'folder'
+          ? `background: url('${Icon(node._opened ? 'fold' : 'unfold')}') no-repeat center;`
+          : ''
+      "
     />
     <span class="name">
       <img v-if="node.icon" :src="Icon(node.icon)" alt="icon" class="icon" />
@@ -70,6 +89,11 @@ const selectNode = () => {
 
   &.highlighted {
     background-color: var(--file-node-highlighted-background-color);
+    &:focus {
+      outline: none;
+      box-shadow: inset 0 0 0 2px var(--file-navigator-focus-border-color);
+      background-color: var(--file-node-highlighted-focused-background-color);
+    }
     color: var(--file-node-highlighted-text-color);
   }
 

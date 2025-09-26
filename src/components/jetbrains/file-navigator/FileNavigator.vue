@@ -4,6 +4,7 @@ import { useJetBrainsStore } from '@/stores/jetbrains'
 import type Node from '@/models/Node'
 
 import { reactive } from 'vue'
+import Icon from '@/models/Icon.ts'
 
 const jetBrainsStore = useJetBrainsStore()
 
@@ -17,6 +18,10 @@ jetBrainsStore.getChildren(fileTree.root as Node).then(() => {
 
 <template>
   <div class="file-navigator" tabindex="0" @keydown.stop.prevent="fileTree.navigateNode">
+    <div class="section">
+      Project
+      <img :src="Icon('fold')" alt="arrow">
+    </div>
     <FileTree :file-tree="fileTree" />
   </div>
 </template>
@@ -24,6 +29,14 @@ jetBrainsStore.getChildren(fileTree.root as Node).then(() => {
 <style scoped lang="scss">
 .file-navigator {
   user-select: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+
+  & .section {
+    font-weight: bold;
+  }
 
   &:focus {
     outline: none;
@@ -42,8 +55,5 @@ jetBrainsStore.getChildren(fileTree.root as Node).then(() => {
   width: var(--file-navigator-width);
   height: var(--file-navigator-height);
   padding: 1rem;
-
-  display: flex;
-  flex-direction: row;
 }
 </style>

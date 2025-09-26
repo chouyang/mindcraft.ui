@@ -1,9 +1,8 @@
-import type { NodeType } from '@/models/Node'
-
+// Root folders for the file navigator
 export default [
   {
     name: 'mindcraft.nodes',
-    type: 'folder' as NodeType.FOLDER,
+    type: 'folder',
     icon: 'nodes/folder',
     path: '/',
     caption: '~/Workspace/starvale.io/mindcraft.nodes',
@@ -12,7 +11,7 @@ export default [
   },
   {
     name: 'mindcraft.protocols',
-    type: 'folder' as NodeType.FOLDER,
+    type: 'folder',
     icon: 'nodes/folder',
     path: '/',
     caption: '~/Workspace/starvale.io/mindcraft.protocols',
@@ -21,7 +20,7 @@ export default [
   },
   {
     name: 'mindcraft.garage',
-    type: 'folder' as NodeType.FOLDER,
+    type: 'folder',
     icon: 'nodes/folder',
     path: '/',
     caption: '~/Workspace/starvale.io/mindcraft.garage',
@@ -30,7 +29,7 @@ export default [
   },
   {
     name: 'mindcraft.oss',
-    type: 'folder' as NodeType.FOLDER,
+    type: 'folder',
     icon: 'nodes/folder',
     path: '/',
     caption: '~/Workspace/starvale.io/mindcraft.oss',
@@ -39,7 +38,7 @@ export default [
   },
   {
     name: 'mindcraft.ui',
-    type: 'folder' as NodeType.FOLDER,
+    type: 'folder',
     icon: 'nodes/folder',
     path: '/',
     caption: '~/Workspace/starvale.io/mindcraft.ui',

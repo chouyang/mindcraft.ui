@@ -13,7 +13,6 @@ defineProps({
 
 <template>
   <div class="file-tree">
-    <div class="section">Project ></div>
     <template v-for="node in fileTree" :key="node.path + node.name">
       <FileNode
         :node="node"
@@ -28,9 +27,5 @@ defineProps({
 .file-tree {
   width: 100%;
   height: 100%;
-
-  & .section {
-    margin-bottom: 1rem;
-  }
 }
 </style>
