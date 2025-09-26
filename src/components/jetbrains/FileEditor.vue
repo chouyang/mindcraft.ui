@@ -111,7 +111,7 @@ watch(
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+  align-items: flex-end;
 
   & .editor-container {
     display: flex;
@@ -122,17 +122,14 @@ watch(
   }
 
   & .line-numbers {
-    background-color: var(--file-editor-index-background-color);
-    border-right: 1px solid var(--file-editor-border-color);
-    padding: 0.5rem 0.2rem;
-    min-width: 3rem;
+    user-select: none;
+
+    width: 4rem;
+    padding-right: 2rem;
     text-align: right;
     font-size: 0.8rem;
-    color: var(--file-editor-index-text-color);
-    user-select: none;
-    flex-shrink: 0;
-    height: 100%;
-    overflow: hidden;
+    color: var(--file-viewer-index-text-color);
+    border-right: 1px solid var(--file-editor-border-color);
 
     & .line-number {
       line-height: 1.2rem;
@@ -171,7 +168,7 @@ watch(
     background-color: var(--file-editor-status-background-color, #1e1e1e);
     border-top: 1px solid var(--file-editor-border-color, #f5f5f5);
     font-size: 0.8rem;
-    width: 100%;
+    width: 50%;
 
     & .dirty-indicator {
       color: var(--file-editor-dirty-color, #ffa500);
