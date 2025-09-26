@@ -89,10 +89,8 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
         if (response.data.code === 0) {
           const n = response.data.payload as Node
           if (n.name) {
-            openedFile.value = n
-            file.content = n.content
-            file.extension = n.extension
-            file.caption = n.caption
+            Object.assign(file, n)
+            openedFile.value = file
             initializeEditor()
           }
         }

@@ -172,7 +172,7 @@ export default class Tree implements Iterable<Node> {
    */
   public async open(node: Node) {
     // Avoid re-opening node
-    if (node._opened) {
+    if (node.type === 'folder' && node._opened) {
       return
     }
 
@@ -307,7 +307,7 @@ export default class Tree implements Iterable<Node> {
 
       // Enter toggles folder open/close or opens file in editor
       case 'Enter':
-        if (node._opened) {
+        if (node.type === 'folder' && node._opened) {
           return this.close(node)
         }
 
