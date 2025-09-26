@@ -4,7 +4,7 @@ export default [
   {
     name: 'mindcraft.nodes',
     type: 'folder' as NodeType.FOLDER,
-    icon: 'folder',
+    icon: 'nodes/folder',
     path: '/',
     caption: '~/Workspace/starvale.io/mindcraft.nodes',
     indent: 0,
@@ -13,7 +13,7 @@ export default [
   {
     name: 'mindcraft.protocols',
     type: 'folder' as NodeType.FOLDER,
-    icon: 'folder',
+    icon: 'nodes/folder',
     path: '/',
     caption: '~/Workspace/starvale.io/mindcraft.protocols',
     indent: 0,
@@ -22,7 +22,7 @@ export default [
   {
     name: 'mindcraft.garage',
     type: 'folder' as NodeType.FOLDER,
-    icon: 'folder',
+    icon: 'nodes/folder',
     path: '/',
     caption: '~/Workspace/starvale.io/mindcraft.garage',
     indent: 0,
@@ -31,7 +31,7 @@ export default [
   {
     name: 'mindcraft.oss',
     type: 'folder' as NodeType.FOLDER,
-    icon: 'folder',
+    icon: 'nodes/folder',
     path: '/',
     caption: '~/Workspace/starvale.io/mindcraft.oss',
     indent: 0,
@@ -40,7 +40,7 @@ export default [
   {
     name: 'mindcraft.ui',
     type: 'folder' as NodeType.FOLDER,
-    icon: 'folder',
+    icon: 'nodes/folder',
     path: '/',
     caption: '~/Workspace/starvale.io/mindcraft.ui',
     indent: 0,

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type Node from '@/models/Node.d.ts'
 import { ref } from 'vue'
+import Icon from '@/models/Icon.ts'
 
 const props = defineProps({
   node: {
@@ -38,11 +39,12 @@ const selectNode = () => {
     :class="{ highlighted: node._highlighted, 'file-node': true }"
     :id="node._id"
   >
-    <span class="arrow">
-      {{ node.type === 'folder' ? (node._opened ? 'v' : '>') : '' }}
-    </span>
+    <span
+      class="arrow"
+      :style="node.type === 'folder' ? `background: url('${Icon(node._opened ? 'fold' : 'unfold')}') no-repeat center;` : ''"
+    />
     <span class="name">
-      {{ node.type === 'folder' ? (node._opened ? '📂' : '📁') : '📄' }}
+      <img v-if="node.icon" :src="Icon(node.icon)" alt="icon" class="icon" />
       {{ node.name }}
     </span>
     <span class="caption">
@@ -56,8 +58,13 @@ const selectNode = () => {
   padding: 0.25rem 1rem 0.25rem calc(1.2rem * v-bind(indent));
   cursor: pointer;
   overflow: hidden;
-  text-overflow: ellipsis;
   white-space: nowrap;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  user-select: none;
 
   width: 100%;
 
@@ -66,17 +73,29 @@ const selectNode = () => {
     color: var(--file-node-highlighted-text-color);
   }
 
+  & .name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    gap: 0.5rem;
+  }
+
   & .arrow {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 20px;
     width: 20px;
-    user-select: none;
   }
 
   & .caption {
     margin-left: 0.5rem;
     color: var(--file-node-caption-text-color);
     font-size: 0.8rem;
-    user-select: none;
+
+    max-width: 50%;
   }
 }
 </style>

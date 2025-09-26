@@ -7,9 +7,16 @@ import 'highlight.js/styles/atom-one-dark.css'
 
 const jetBrainsStore = useJetBrainsStore()
 
+const binaryExtensions = ['png', 'jpg', 'jpeg', 'gif', 'bmp']
+const isBinary = computed(() => {
+  if (!jetBrainsStore.openedFile) return false
+  return binaryExtensions.includes(jetBrainsStore.openedFile.extension || '')
+})
+
 // Highlight the content, then split into lines
 const lines = computed(() => {
   if (!jetBrainsStore.openedFile?.content) return []
+  if (isBinary.value) return []
   const content = highlighter.highlight(jetBrainsStore.openedFile.content, {
     language: jetBrainsStore.language || 'plaintext',
   })
@@ -18,11 +25,15 @@ const lines = computed(() => {
 })
 </script>
 <template>
-  <div class="file-editor">
+  <div class="file-editor" v-if="!isBinary">
+    <div class="index-box" />
     <div class="line" v-for="(line, index) in lines" :key="index">
       <div class="index">{{ index + 1 }}</div>
       <pre class="code-wrapper"><code class="code" v-html="line" /></pre>
     </div>
+  </div>
+  <div v-else class="binary-viewer">
+    <img :src="jetBrainsStore.openedFile?.content" :alt="jetBrainsStore.openedFile.name" />
   </div>
 </template>
 
@@ -44,6 +55,16 @@ const lines = computed(() => {
   align-items: flex-start;
 
   overflow: auto;
+
+  & .index-box {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 1.4rem;
+    height: 100%;
+    width: 2rem;
+    border-right: 1px solid #f5f5f5;
+  }
 
   & .line {
     display: flex;
