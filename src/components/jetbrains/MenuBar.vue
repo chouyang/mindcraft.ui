@@ -2,11 +2,16 @@
 import { ref } from 'vue'
 import { computed } from 'vue'
 import { useJetBrainsStore } from '@/stores/jetbrains'
+import Icon from '@/models/Icon.ts'
+import { useDark, useToggle } from '@vueuse/core'
 
 const jetBrainsStore = useJetBrainsStore()
 const node = computed(() => jetBrainsStore.openedFile)
 
 const fileHistoryDroppedDown = ref(false)
+
+const isDarkMode = useDark()
+const toggleDarkMode = useToggle(isDarkMode)
 </script>
 
 <template>
@@ -36,7 +41,10 @@ const fileHistoryDroppedDown = ref(false)
 
     <!--  menubar quick access section  -->
     <div class="section quick-access">
-      <div>Setting</div>
+      <div class="dark-mode" @click="toggleDarkMode()">
+        {{ isDarkMode ? '🌙' : '☀️' }}
+        <img :src="Icon(isDarkMode ? 'toggle-on' : 'toggle-off')" alt="dark mode" />
+      </div>
     </div>
   </div>
 </template>
@@ -97,6 +105,15 @@ const fileHistoryDroppedDown = ref(false)
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+
+    & .dark-mode {
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+    }
   }
 }
 </style>

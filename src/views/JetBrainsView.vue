@@ -1,16 +1,23 @@
 <script setup lang="ts">
-import '@/assets/jetbrains.css'
+import '@/assets/global.css'
 
 import FileNavigator from '@/components/jetbrains/file-navigator/FileNavigator.vue'
 import MenuBar from '@/components/jetbrains/MenuBar.vue'
 import EditorWindow from '@/components/jetbrains/EditorWindow.vue'
+import { useJetBrainsStore } from '@/stores/jetbrains.ts'
+import { computed } from 'vue'
+
+const store = useJetBrainsStore()
+
+const isDark = computed(() => store.isDarkMode)
+
 </script>
 
 <template>
-  <header>
+  <header :class="{'dark-mode': isDark, 'light-mode': !isDark}">
     <MenuBar />
   </header>
-  <main>
+  <main :class="{'dark-mode': isDark, 'light-mode': !isDark}">
     <FileNavigator />
     <EditorWindow />
   </main>

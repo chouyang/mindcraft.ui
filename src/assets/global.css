@@ -19,10 +19,21 @@
   --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
-}
 
-/* semantic color variables for this project */
-:root {
+
+  --menubar-background-color: var(--vt-c-white-mute);
+  --menubar-text-color: var(--vt-c-black-mute);
+
+  --file-navigator-width: 17vw;
+  --file-navigator-height: calc(100vh - var(--menubar-height));
+  --file-navigator-top: var(--menubar-height);
+
+  --editor-window-width: calc(100vw - var(--file-navigator-width));
+  --editor-window-height: calc(100vh - var(--menubar-height));
+  --editor-window-top: var(--menubar-height);
+  --editor-window-left: var(--file-navigator-width);
+
+
   --color-background: var(--vt-c-white);
   --color-background-soft: var(--vt-c-white-soft);
   --color-background-mute: var(--vt-c-white-mute);
@@ -34,20 +45,58 @@
   --color-text: var(--vt-c-text-light-1);
 
   --section-gap: 160px;
+
+  --global-light-height: 1rem;
+
+  --menubar-width: 100vw;
+  --menubar-height: 2rem;
+
+  --file-navigator-background-color: var(--vt-c-white-soft);
+  --file-navigator-text-color: var(--vt-c-black-soft);
+
+  --editor-window-background-color: var(--vt-c-white);
+  --editor-window-text-color: var(--vt-c-black);
+
+  --file-node-highlighted-text-color: var(--vt-c-black);
+  --file-node-highlighted-background-color: rgb(218, 222, 225);
+  --file-node-highlighted-focused-background-color: rgb(204, 222, 250);
+  --file-node-caption-text-color: var(--vt-c-text-light-2);
+
+  --file-editor-index-text-color: var(--vt-c-text-light-2);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
+.dark-mode {
+  --color-background: var(--vt-c-black);
+  --color-background-soft: var(--vt-c-black-soft);
+  --color-background-mute: var(--vt-c-black-mute);
 
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
+  --color-border: var(--vt-c-divider-dark-2);
+  --color-border-hover: var(--vt-c-divider-dark-1);
 
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
-  }
+  --color-heading: var(--vt-c-text-dark-1);
+  --color-text: var(--vt-c-text-dark-2);
+
+  --global-border-color: var(--vt-c-black);
+
+  --menubar-background-color: rgb(36, 40, 44);
+  --menubar-text-color: rgb(169, 168, 173);
+
+  --file-navigator-background-color: rgb(37, 41, 42);
+  --file-navigator-text-color: var(--vt-c-white-soft);
+
+  --editor-window-background-color: rgb(28, 30, 31);
+  --editor-window-text-color: rgb(176, 180, 181);
+
+  --file-node-highlighted-text-color: var(--vt-c-white-mute);
+  --file-node-highlighted-background-color: rgb(57, 61, 65);
+  --file-node-highlighted-focused-background-color: rgb(39, 61, 92);
+  --file-node-caption-text-color: var(--vt-c-text-dark-2);
+
+  --file-editor-index-text-color: rgb(176, 180, 181);
+
+  --file-viewer-text-color: rgb(186, 190, 191);
+
+  --file-viewer-background-color: rgb(28, 30, 31);
 }
 
 *,
@@ -62,23 +111,21 @@ body {
   min-height: 100vh;
   color: var(--color-text);
   background: var(--color-background);
-  transition:
-    color 0.5s,
-    background-color 0.5s;
+  transition: color 0.5s,
+  background-color 0.5s;
   line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
+  font-family: Inter,
+  -apple-system,
+  BlinkMacSystemFont,
+  'Segoe UI',
+  Roboto,
+  Oxygen,
+  Ubuntu,
+  Cantarell,
+  'Fira Sans',
+  'Droid Sans',
+  'Helvetica Neue',
+  sans-serif;
   font-size: 15px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
