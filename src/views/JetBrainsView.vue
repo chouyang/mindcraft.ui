@@ -10,14 +10,13 @@ import { computed } from 'vue'
 const store = useJetBrainsStore()
 
 const isDark = computed(() => store.isDarkMode)
-
 </script>
 
 <template>
-  <header :class="{'dark-mode': isDark, 'light-mode': !isDark}">
+  <header :class="{ 'dark-mode': isDark, 'light-mode': !isDark }">
     <MenuBar />
   </header>
-  <main :class="{'dark-mode': isDark, 'light-mode': !isDark}">
+  <main :class="{ 'dark-mode': isDark, 'light-mode': !isDark }">
     <FileNavigator />
     <EditorWindow />
   </main>

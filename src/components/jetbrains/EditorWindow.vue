@@ -2,7 +2,7 @@
 import FileEditor from '@/components/jetbrains/FileEditor.vue'
 import FileViewer from '@/components/jetbrains/FileViewer.vue'
 import MarkdownViewer from '@/components/jetbrains/MarkdownViewer.vue'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useJetBrainsStore } from '@/stores/jetbrains'
 
 const jetBrainsStore = useJetBrainsStore()
@@ -10,15 +10,14 @@ const isMarkdown = computed(
   () => (jetBrainsStore.openedFile?.extension || '').toLowerCase() === 'md',
 )
 
-// TODO: manage edit mode state globally with a toggle button
-const inEditMode = ref(false)
+const inEditMode = computed(() => jetBrainsStore.inEditMode)
 </script>
 
 <template>
   <div class="editor-window">
     <MarkdownViewer :full-width="!inEditMode" v-if="isMarkdown" />
     <FileViewer :full-width="!inEditMode" v-else />
-    <FileEditor v-if="inEditMode" />
+    <FileEditor :full-width="false" v-if="inEditMode" />
   </div>
 </template>
 

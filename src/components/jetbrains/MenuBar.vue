@@ -12,6 +12,10 @@ const fileHistoryDroppedDown = ref(false)
 
 const isDarkMode = useDark()
 const toggleDarkMode = useToggle(isDarkMode)
+
+const toggleEditMode = () => {
+  jetBrainsStore.toggleEditMode()
+}
 </script>
 
 <template>
@@ -44,6 +48,9 @@ const toggleDarkMode = useToggle(isDarkMode)
       <div class="dark-mode" @click="toggleDarkMode()">
         {{ isDarkMode ? '🌙' : '☀️' }}
         <img :src="Icon(isDarkMode ? 'toggle-on' : 'toggle-off')" alt="dark mode" />
+      </div>
+      <div class="edit-mode" @click="toggleEditMode()">
+        <img :src="Icon('edit')" alt="edit" />
       </div>
     </div>
   </div>
@@ -105,6 +112,7 @@ const toggleDarkMode = useToggle(isDarkMode)
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    gap: 1rem;
 
     & .dark-mode {
       cursor: pointer;
@@ -113,6 +121,10 @@ const toggleDarkMode = useToggle(isDarkMode)
       justify-content: center;
       align-items: center;
       gap: 0.5rem;
+    }
+
+    & .edit-mode {
+      cursor: pointer;
     }
   }
 }

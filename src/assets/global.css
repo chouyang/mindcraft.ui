@@ -20,7 +20,6 @@
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 
-
   --menubar-background-color: var(--vt-c-white-mute);
   --menubar-text-color: var(--vt-c-black-mute);
 
@@ -32,7 +31,6 @@
   --editor-window-height: calc(100vh - var(--menubar-height));
   --editor-window-top: var(--menubar-height);
   --editor-window-left: var(--file-navigator-width);
-
 
   --color-background: var(--vt-c-white);
   --color-background-soft: var(--vt-c-white-soft);
@@ -63,6 +61,7 @@
   --file-node-caption-text-color: var(--vt-c-text-light-2);
 
   --file-editor-index-text-color: var(--vt-c-text-light-2);
+  --file-editor-border-color: rgb(235, 235, 235);
 }
 
 .dark-mode {
@@ -93,9 +92,9 @@
   --file-node-caption-text-color: var(--vt-c-text-dark-2);
 
   --file-editor-index-text-color: rgb(176, 180, 181);
+  --file-editor-border-color: rgb(43, 47, 47);
 
   --file-viewer-text-color: rgb(186, 190, 191);
-
   --file-viewer-background-color: rgb(28, 30, 31);
 }
 
@@ -111,21 +110,23 @@ body {
   min-height: 100vh;
   color: var(--color-text);
   background: var(--color-background);
-  transition: color 0.5s,
-  background-color 0.5s;
+  transition:
+    color 0.5s,
+    background-color 0.5s;
   line-height: 1.6;
-  font-family: Inter,
-  -apple-system,
-  BlinkMacSystemFont,
-  'Segoe UI',
-  Roboto,
-  Oxygen,
-  Ubuntu,
-  Cantarell,
-  'Fira Sans',
-  'Droid Sans',
-  'Helvetica Neue',
-  sans-serif;
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    'Fira Sans',
+    'Droid Sans',
+    'Helvetica Neue',
+    sans-serif;
   font-size: 15px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

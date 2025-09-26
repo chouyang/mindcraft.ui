@@ -1,4 +1,4 @@
-import { computed, ref, } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import type Node from '@/models/Node'
 import api from '@/api/request.ts'
@@ -21,16 +21,15 @@ export type Response<T> = {
  * Store to manage JetBrains-like IDE states
  */
 export const useJetBrainsStore = defineStore('jetbrains', () => {
-
   /**
    * @var isDarkMode Global state to toggle dark mode or light mode theme.
    */
   const isDarkMode = ref(false)
 
   /**
-   * @var isEditMode Whether the editor is in edit mode (true) or read-only mode (false)
+   * @var inEditMode Whether the editor is in edit mode (true) or read-only mode (false)
    */
-  const isEditMode = ref(false)
+  const inEditMode = ref(false)
 
   /**
    * @var openedFile Currently opened file in the editor
@@ -178,15 +177,17 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
   function initializeEditor() {
     editedContent.value = openedFile.value.content || ''
     isDirty.value = false
+    // Don't reset inEditMode here - let the user control it
   }
 
-  function toggleDarkMode(isDark?: boolean) {
-    isDarkMode.value = typeof isDark === 'undefined' ? !isDarkMode.value : isDark
+  function toggleEditMode(isEdit?: boolean) {
+    inEditMode.value = typeof isEdit === 'undefined' ? !inEditMode.value : isEdit
+    console.log('inEditMode', inEditMode.value)
   }
 
   return {
     isDarkMode,
-    isEditMode,
+    inEditMode,
     openedFile,
     editedContent,
     isDirty,
@@ -197,6 +198,6 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
     updateContent,
     saveContent,
     initializeEditor,
-    toggleDarkMode,
+    toggleEditMode,
   }
 })

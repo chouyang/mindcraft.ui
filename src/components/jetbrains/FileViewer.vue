@@ -44,9 +44,7 @@ const widthDivider = computed(() => (props.fullWidth ? 1 : 2))
     <div v-html="node.content" />
   </div>
   <div v-else-if="node?.type" class="binary-viewer">
-    <p>
-      Cannot preview this file type.
-    </p>
+    <p>Cannot preview this file type.</p>
   </div>
 </template>
 
@@ -56,8 +54,10 @@ const widthDivider = computed(() => (props.fullWidth ? 1 : 2))
   justify-content: center;
   align-items: center;
 
-  width: var(--editor-window-width);
+  width: calc(var(--editor-window-width) / v-bind(widthDivider));
   height: var(--editor-window-height);
+
+  background-color: var(--file-viewer-background-color);
 }
 .file-viewer {
   color: var(--file-viewer-text-color);
@@ -92,7 +92,7 @@ const widthDivider = computed(() => (props.fullWidth ? 1 : 2))
       text-align: right;
       font-size: 0.8rem;
       color: var(--file-viewer-index-text-color);
-      border-right: 1px solid #444;
+      border-right: 1px solid var(--file-editor-border-color);
     }
 
     & .code-wrapper {

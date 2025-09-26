@@ -20,7 +20,7 @@ jetBrainsStore.getChildren(fileTree.root as Node).then(() => {
   <div class="file-navigator" tabindex="0" @keydown.stop.prevent="fileTree.navigateNode">
     <div class="section">
       Project
-      <img :src="Icon('fold')" alt="arrow">
+      <img :src="Icon('fold')" alt="arrow" />
     </div>
     <FileTree :file-tree="fileTree" />
   </div>

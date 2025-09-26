@@ -9,7 +9,7 @@ useDark({
   attribute: 'color-scheme',
   valueDark: 'dark',
   valueLight: 'light',
-  onChanged: dark => store.isDarkMode = dark,
+  onChanged: (dark) => (store.isDarkMode = dark),
 })
 </script>
 

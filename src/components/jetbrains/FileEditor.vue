@@ -1,8 +1,18 @@
 <script lang="ts" setup>
-import { watch, onMounted, ref } from 'vue'
+import { watch, onMounted, ref, computed } from 'vue'
 import { useJetBrainsStore } from '@/stores/jetbrains'
 
 const jetBrainsStore = useJetBrainsStore()
+
+// Whether to use full width (1/1) or half width (1/2)
+const props = defineProps({
+  fullWidth: {
+    type: Boolean,
+    default: true,
+  },
+})
+
+const widthDivider = computed(() => (props.fullWidth ? 1 : 2))
 
 // References for syncing scroll between editor and gutter
 const editorArea = ref<HTMLTextAreaElement | null>(null)
@@ -46,11 +56,14 @@ onMounted(() => {
 })
 
 // Watch for file changes to reinitialize editor
-watch(() => jetBrainsStore.openedFile.name, () => {
-  if (jetBrainsStore.openedFile.name) {
-    jetBrainsStore.initializeEditor()
-  }
-})
+watch(
+  () => jetBrainsStore.openedFile.name,
+  () => {
+    if (jetBrainsStore.openedFile.name) {
+      jetBrainsStore.initializeEditor()
+    }
+  },
+)
 </script>
 <template>
   <div class="file-editor">
@@ -71,7 +84,11 @@ watch(() => jetBrainsStore.openedFile.name, () => {
         @keydown="handleKeyDown"
         @scroll="syncScroll"
         class="code-editor"
-        :placeholder="jetBrainsStore.openedFile.name ? `Edit ${jetBrainsStore.openedFile.name}` : 'No file opened'"
+        :placeholder="
+          jetBrainsStore.openedFile.name
+            ? `Edit ${jetBrainsStore.openedFile.name}`
+            : 'No file opened'
+        "
         spellcheck="false"
       />
     </div>
@@ -84,10 +101,10 @@ watch(() => jetBrainsStore.openedFile.name, () => {
 
 <style scoped lang="scss">
 .file-editor {
-  color: var(--file-editor-text-color);
-  background-color: var(--file-editor-background-color);
+  color: var(--file-viewer-text-color);
+  background-color: var(--file-viewer-background-color);
 
-  width: calc(var(--editor-window-width) / 2);
+  width: calc(var(--editor-window-width) / v-bind(widthDivider));
   height: var(--editor-window-height);
   overflow: hidden;
 
@@ -99,7 +116,7 @@ watch(() => jetBrainsStore.openedFile.name, () => {
   & .editor-container {
     display: flex;
     flex: 1;
-    width: calc(var(--editor-window-width) / 2);
+    width: calc(var(--editor-window-width) / v-bind(widthDivider));
     height: var(--editor-window-height);
     overflow: hidden;
   }
