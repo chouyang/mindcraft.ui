@@ -13,19 +13,28 @@ const isDark = computed(() => store.isDarkMode)
 </script>
 
 <template>
-  <header :class="{ 'dark-mode': isDark, 'light-mode': !isDark }">
+  <header :class="{ 'dark-mode': isDark, 'light-mode': !isDark, 'header': true }">
     <MenuBar />
   </header>
-  <main :class="{ 'dark-mode': isDark, 'light-mode': !isDark }">
+  <main :class="{ 'dark-mode': isDark, 'light-mode': !isDark, 'main': true }">
     <FileNavigator />
     <EditorWindow />
   </main>
 </template>
 
 <style scoped>
+.header {
+  z-index: 1;
+}
+
+.main {
+  z-index: 0;
+}
+
 header {
   line-height: 1.5;
   max-height: 100vh;
+  overflow: visible; /* Allow dropdown to extend beyond header boundaries */
 }
 
 nav {

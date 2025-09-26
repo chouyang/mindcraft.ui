@@ -175,18 +175,24 @@ export default class Tree implements Iterable<Node> {
     if (node.type === 'folder' && node._opened) {
       return
     }
+    const store = useJetBrainsStore()
 
     // For file, open it in editor component
     if (node.type !== 'folder') {
-      useJetBrainsStore()
-        .getDetail(node)
-        .then(() => (node._opened = true))
+      const openedFile = store.openedFile
+      store.getDetail(node)
+      .then(() => {
+        node._opened = true
+        if (openedFile.name) {
+          store.addFileToHistory(openedFile)
+        }
+      })
       return
     }
 
     // For folder, fetch children if not already loaded
     if (!node._firstChild) {
-      await useJetBrainsStore().getChildren(node)
+      await store.getChildren(node)
     }
 
     // recursively find last child node of closed parent
@@ -216,15 +222,7 @@ export default class Tree implements Iterable<Node> {
    */
   public async tryOpen(node?: Node) {
     if (!node) return
-    if (node.type === 'folder') {
-      if (node._opened) {
-        this.close(node)
-      } else {
-        await this.open(node)
-      }
-    } else {
-      await useJetBrainsStore().getDetail(node)
-    }
+    return node._opened ? this.close(node) : await this.open(node)
   }
 
   /**

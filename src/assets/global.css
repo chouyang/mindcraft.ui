@@ -21,7 +21,11 @@
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 
   --menubar-background-color: var(--vt-c-white-mute);
-  --menubar-text-color: var(--vt-c-black-mute);
+  --menubar-text-color: var(--vt-c-black);
+  --menubar-dropdown-text-color: var(--vt-c-black);
+  --menubar-dropdown-background-color: var(--vt-c-white);
+  --menubar-dropdown-hover-background-color: var(--vt-c-white-soft);
+  --menubar-current-file-background-color: rgb(218, 222, 225);
 
   --file-navigator-width: 17vw;
   --file-navigator-height: calc(100vh - var(--menubar-height));
@@ -78,7 +82,11 @@
   --global-border-color: var(--vt-c-black);
 
   --menubar-background-color: rgb(36, 40, 44);
-  --menubar-text-color: rgb(169, 168, 173);
+  --menubar-text-color: var(--vt-c-white);
+  --menubar-dropdown-text-color: var(--vt-c-white);
+  --menubar-dropdown-background-color: rgb(33, 33, 33);
+  --menubar-dropdown-hover-background-color: rgb(44, 44, 44);
+  --menubar-current-file-background-color: rgb(57, 61, 65);
 
   --file-navigator-background-color: rgb(37, 41, 42);
   --file-navigator-text-color: var(--vt-c-white-soft);

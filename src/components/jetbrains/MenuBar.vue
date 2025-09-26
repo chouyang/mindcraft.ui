@@ -8,13 +8,24 @@ import { useDark, useToggle } from '@vueuse/core'
 const jetBrainsStore = useJetBrainsStore()
 const node = computed(() => jetBrainsStore.openedFile)
 
-const fileHistoryDroppedDown = ref(false)
+const fhDropped = ref(false)
 
 const isDarkMode = useDark()
 const toggleDarkMode = useToggle(isDarkMode)
 
+const toggleFileHistory = () => {
+  fhDropped.value = !fhDropped.value
+}
+
 const toggleEditMode = () => {
   jetBrainsStore.toggleEditMode()
+}
+
+const fileHistory = computed(() => jetBrainsStore.fileHistory)
+
+const visitHistory = (file: typeof node.value) => {
+  jetBrainsStore.tree.open(file)
+  fhDropped.value = false
 }
 </script>
 
@@ -33,14 +44,17 @@ const toggleEditMode = () => {
 
     <!--  menubar history section  -->
     <div class="section history">
-      <div>{{ node.name }}</div>
-      <ul class="list" v-if="fileHistoryDroppedDown">
-        <li class="item">History</li>
-        <li class="item">History</li>
-        <li class="item">History</li>
-        <li class="item">History</li>
-        <li class="item">History</li>
-      </ul>
+      <div class="current-file" @click="toggleFileHistory" v-if="node.name">
+        <img :src="Icon(node.icon || '')" alt="icon" />
+        {{ node.name }}
+        <img :src="Icon(fhDropped ? 'fold' : 'unfold')" alt="dropdown" />
+      </div>
+      <div class="list" v-if="fhDropped">
+        <div v-for="(file, index) in fileHistory" :key="index" @click="visitHistory(file)">
+          <img :src="Icon(file.icon)" alt="">
+          {{ file.name }}
+        </div>
+      </div>
     </div>
 
     <!--  menubar quick access section  -->
@@ -104,8 +118,54 @@ const toggleEditMode = () => {
 
   & .history {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    position: relative;
+
+    & .current-file {
+      cursor: pointer;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: bold;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      max-width: 100%;
+      padding: 0 0.5rem;
+      border-radius: 0.25rem;
+
+      &:hover {
+        background-color: var(--menubar-current-file-background-color);
+      }
+    }
+
+    & .list {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--menubar-dropdown-text-color);
+      background-color: var(--menubar-dropdown-background-color);
+      border: 1px solid var(--global-border-color);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      width: max-content;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      & > div {
+        padding: 0.3rem 1rem;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+      & > div:hover {
+        background-color: var(--menubar-dropdown-hover-background-color);
+      }
+    }
   }
 
   & .quick-access {

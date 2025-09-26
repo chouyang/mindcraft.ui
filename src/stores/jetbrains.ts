@@ -67,6 +67,26 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
   })
 
   /**
+   * @var fileHistory Ten most recently opened files
+   */
+  const fileHistory = ref([] as Node[])
+
+  /**
+   * Add a file to the history, maintaining a maximum of 10 entries
+   *
+   * @param file
+   */
+  function addFileToHistory(file: Node) {
+    if (fileHistory.value.find((f) => f === file)) {
+      return
+    }
+    fileHistory.value.unshift(file)
+    if (fileHistory.value.length > 10) {
+      fileHistory.value.pop()
+    }
+  }
+
+  /**
    * Fetch detailed info of a file node, usually for opening in the editor
    *
    * @param file File node to fetch details for
@@ -177,7 +197,6 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
   function initializeEditor() {
     editedContent.value = openedFile.value.content || ''
     isDirty.value = false
-    // Don't reset inEditMode here - let the user control it
   }
 
   function toggleEditMode(isEdit?: boolean) {
@@ -193,11 +212,13 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
     isDirty,
     language,
     tree,
+    fileHistory,
     getDetail,
     getChildren,
     updateContent,
     saveContent,
     initializeEditor,
     toggleEditMode,
+    addFileToHistory,
   }
 })
