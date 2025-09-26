@@ -176,7 +176,6 @@ export default class Tree implements Iterable<Node> {
       return
     }
     const store = useJetBrainsStore()
-
     // For file, open it in editor component
     if (node.type !== 'folder') {
       const openedFile = store.openedFile
@@ -222,7 +221,11 @@ export default class Tree implements Iterable<Node> {
    */
   public async tryOpen(node?: Node) {
     if (!node) return
-    return node._opened ? this.close(node) : await this.open(node)
+    if (node.type === 'folder' && node._opened) {
+        return this.close(node)
+    }
+
+    return await this.open(node)
   }
 
   /**

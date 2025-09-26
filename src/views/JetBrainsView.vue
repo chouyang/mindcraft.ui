@@ -4,6 +4,7 @@ import '@/assets/global.css'
 import FileNavigator from '@/components/jetbrains/file-navigator/FileNavigator.vue'
 import MenuBar from '@/components/jetbrains/MenuBar.vue'
 import EditorWindow from '@/components/jetbrains/EditorWindow.vue'
+import StatusBar from '@/components/jetbrains/StatusBar.vue'
 import { useJetBrainsStore } from '@/stores/jetbrains.ts'
 import { computed } from 'vue'
 
@@ -20,6 +21,9 @@ const isDark = computed(() => store.isDarkMode)
     <FileNavigator />
     <EditorWindow />
   </main>
+  <footer :class="{ 'dark-mode': isDark, 'light-mode': !isDark, 'main': true }">
+    <StatusBar />
+  </footer>
 </template>
 
 <style scoped>

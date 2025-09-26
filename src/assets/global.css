@@ -20,25 +20,6 @@
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 
-  --menubar-background-color: var(--vt-c-white-mute);
-  --menubar-text-color: var(--vt-c-black);
-  --menubar-dropdown-text-color: var(--vt-c-black);
-  --menubar-dropdown-background-color: var(--vt-c-white);
-  --menubar-dropdown-hover-background-color: var(--vt-c-white-soft);
-  --menubar-current-file-background-color: rgb(218, 222, 225);
-
-  --file-navigator-width: 17vw;
-  --file-navigator-height: calc(100vh - var(--menubar-height));
-  --file-navigator-top: var(--menubar-height);
-
-  --editor-window-width: calc(100vw - var(--file-navigator-width));
-  --editor-window-height: calc(100vh - var(--menubar-height));
-  --editor-window-top: var(--menubar-height);
-  --editor-window-left: var(--file-navigator-width);
-
-  --color-background: var(--vt-c-white);
-  --color-background-soft: var(--vt-c-white-soft);
-  --color-background-mute: var(--vt-c-white-mute);
 
   --color-border: var(--vt-c-divider-light-2);
   --color-border-hover: var(--vt-c-divider-light-1);
@@ -46,26 +27,55 @@
   --color-heading: var(--vt-c-text-light-1);
   --color-text: var(--vt-c-text-light-1);
 
-  --section-gap: 160px;
+  --color-background: var(--vt-c-white);
+  --color-background-soft: var(--vt-c-white-soft);
+  --color-background-mute: var(--vt-c-white-mute);
 
+  --section-gap: 160px;
   --global-light-height: 1rem;
 
+  /* ----- Menubar ----- */
   --menubar-width: 100vw;
-  --menubar-height: 2rem;
+  --menubar-height: 2.7rem;
+  --menubar-background-color: var(--vt-c-white-mute);
+  --menubar-text-color: var(--vt-c-black);
+  --menubar-dropdown-text-color: var(--vt-c-black);
+  --menubar-dropdown-background-color: var(--vt-c-white);
+  --menubar-dropdown-hover-background-color: var(--vt-c-white-soft);
+  --menubar-current-file-background-color: rgb(218, 222, 225);
 
-  --file-navigator-background-color: var(--vt-c-white-soft);
-  --file-navigator-text-color: var(--vt-c-black-soft);
+  /* ----- File Navigator ----- */
+  --file-navigator-width: 17vw;
+  --file-navigator-height: calc(100vh - var(--menubar-height) - var(--statusbar-height));
+  --file-navigator-top: var(--menubar-height);
 
+  /* ----- Editor Window ----- */
+  --editor-window-width: calc(100vw - var(--file-navigator-width));
+  --editor-window-height: calc(100vh - var(--menubar-height) - var(--statusbar-height));
+  --editor-window-top: var(--menubar-height);
+  --editor-window-left: var(--file-navigator-width);
   --editor-window-background-color: var(--vt-c-white);
   --editor-window-text-color: var(--vt-c-black);
 
+  /* ----- File Navigator ----- */
+  --file-navigator-background-color: var(--vt-c-white-soft);
+  --file-navigator-text-color: var(--vt-c-black-soft);
+
+  /* ----- File Node ----- */
   --file-node-highlighted-text-color: var(--vt-c-black);
   --file-node-highlighted-background-color: rgb(218, 222, 225);
   --file-node-highlighted-focused-background-color: rgb(204, 222, 250);
   --file-node-caption-text-color: var(--vt-c-text-light-2);
 
+  /* ----- File Editor ----- */
   --file-editor-index-text-color: var(--vt-c-text-light-2);
   --file-editor-border-color: rgb(235, 235, 235);
+
+  /* ----- Statusbar ----- */
+  --statusbar-width: 100vw;
+  --statusbar-height: 2.5rem;
+  --statusbar-text-color: var(--vt-c-black);
+  --statusbar-background-color: var(--vt-c-white-mute);
 }
 
 .dark-mode {
@@ -104,6 +114,10 @@
 
   --file-viewer-text-color: rgb(186, 190, 191);
   --file-viewer-background-color: rgb(28, 30, 31);
+
+  /* ----- Statusbar ----- */
+  --statusbar-text-color: var(--vt-c-white-mute);
+  --statusbar-background-color: rgb(36, 40, 44);
 }
 
 *,

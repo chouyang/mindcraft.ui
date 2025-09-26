@@ -32,16 +32,6 @@ jetBrainsStore.getChildren(fileTree.root as Node).then(() => {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.5rem;
-
-  & .section {
-    font-weight: bold;
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: inset 0 0 0 2px var(--file-navigator-focus-border-color);
-  }
 
   line-height: var(--global-light-height);
   color: var(--file-navigator-text-color);
@@ -55,5 +45,14 @@ jetBrainsStore.getChildren(fileTree.root as Node).then(() => {
   width: var(--file-navigator-width);
   height: var(--file-navigator-height);
   padding: 1rem;
+
+  & .section {
+    font-weight: bold;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--file-navigator-focus-border-color);
+  }
 }
 </style>
