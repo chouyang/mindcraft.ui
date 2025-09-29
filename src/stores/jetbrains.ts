@@ -130,6 +130,30 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
   }
 
   /**
+   * Create a new file or folder node
+   *
+   * @param node
+   */
+  async function createNode(node: Node): Promise<AxiosResponse<Response<Node>>> {
+    // Avoid sending reactive proxies/circular structures to axios
+    const payload = {
+      name: node.name,
+      type: node.type,
+      path: node.path,
+    } as Partial<Node>
+
+    return api
+      .request({
+        url: `/v1/node`,
+        method: 'POST',
+        data: payload,
+      })
+      .then((response: AxiosResponse<Response<Node>>): AxiosResponse<Response<Node>> => {
+        return response
+      })
+  }
+
+  /**
    * Fetch children of a folder node, usually when expanding a folder in the tree
    * Should only be called once
    *
@@ -199,6 +223,11 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
     isDirty.value = false
   }
 
+  /**
+   * Toggle edit mode on or off
+   *
+   * @param isEdit
+   */
   function toggleEditMode(isEdit?: boolean) {
     inEditMode.value = typeof isEdit === 'undefined' ? !inEditMode.value : isEdit
     console.log('inEditMode', inEditMode.value)
@@ -214,6 +243,7 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
     tree,
     fileHistory,
     getDetail,
+    createNode,
     getChildren,
     updateContent,
     saveContent,

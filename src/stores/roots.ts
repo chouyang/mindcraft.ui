@@ -1,6 +1,7 @@
 // Root folders for the file navigator
 export default [
   {
+    id: BigInt(10),
     name: 'mindcraft.nodes',
     type: 'folder',
     icon: 'nodes/folder',
@@ -10,6 +11,7 @@ export default [
     _opened: true,
   },
   {
+    id: BigInt(20),
     name: 'mindcraft.protocols',
     type: 'folder',
     icon: 'nodes/folder',
@@ -19,6 +21,7 @@ export default [
     _opened: false,
   },
   {
+    id: BigInt(30),
     name: 'mindcraft.garage',
     type: 'folder',
     icon: 'nodes/folder',
@@ -28,6 +31,7 @@ export default [
     _opened: false,
   },
   {
+    id: BigInt(40),
     name: 'mindcraft.oss',
     type: 'folder',
     icon: 'nodes/folder',
@@ -37,6 +41,7 @@ export default [
     _opened: false,
   },
   {
+    id: BigInt(50),
     name: 'mindcraft.ui',
     type: 'folder',
     icon: 'nodes/folder',

@@ -14,14 +14,14 @@ const isDark = computed(() => store.isDarkMode)
 </script>
 
 <template>
-  <header :class="{ 'dark-mode': isDark, 'light-mode': !isDark, 'header': true }">
+  <header :class="{ 'dark-mode': isDark, 'light-mode': !isDark, header: true }">
     <MenuBar />
   </header>
-  <main :class="{ 'dark-mode': isDark, 'light-mode': !isDark, 'main': true }">
+  <main :class="{ 'dark-mode': isDark, 'light-mode': !isDark, main: true }">
     <FileNavigator />
     <EditorWindow />
   </main>
-  <footer :class="{ 'dark-mode': isDark, 'light-mode': !isDark, 'main': true }">
+  <footer :class="{ 'dark-mode': isDark, 'light-mode': !isDark, main: true }">
     <StatusBar />
   </footer>
 </template>

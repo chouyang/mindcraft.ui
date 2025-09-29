@@ -21,19 +21,17 @@ const crumbs = computed(() => {
   <div class="statusbar">
     <div class="crumbs">
       <div class="crumb" v-if="openedFile?.name">
-        <img :src="Icon('nodes/source-root')" alt="" class="source-root">
+        <img :src="Icon('nodes/source-root')" alt="" class="source-root" />
       </div>
       <div v-for="(crumb, index) in crumbs" :key="index" class="crumb">
-        {{ crumb }} <img :src="Icon('unfold')" alt="">
+        {{ crumb }} <img :src="Icon('unfold')" alt="" />
       </div>
       <div class="crumb" v-if="openedFile?.name">
-        <img :src="Icon(openedFile?.icon)" alt="" class="icon">
+        <img :src="Icon(openedFile?.icon)" alt="" class="icon" />
         {{ openedFile?.name }}
       </div>
     </div>
-    <div class="tray">
-      Line 10, Column 5
-    </div>
+    <div class="tray">Line 10, Column 5</div>
   </div>
 </template>
 
@@ -52,7 +50,7 @@ const crumbs = computed(() => {
   align-items: center;
   justify-content: space-between;
 
-  padding: 0 .7rem;
+  padding: 0 0.7rem;
 
   .crumbs {
     display: flex;

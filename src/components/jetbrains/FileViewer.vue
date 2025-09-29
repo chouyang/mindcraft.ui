@@ -31,7 +31,6 @@ const widthDivider = computed(() => (props.fullWidth ? 1 : 2))
 </script>
 <template>
   <div class="file-viewer" v-if="node?.type === 'text'">
-    <div class="index-box" />
     <div class="line" v-for="(line, index) in lines" :key="index">
       <div class="index">{{ index + 1 }}</div>
       <pre class="code-wrapper"><code class="code" v-html="line" /></pre>

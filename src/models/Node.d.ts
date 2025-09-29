@@ -3,6 +3,7 @@
  * A file can be an article, a media file, source code or any kind of files
  */
 type Node = {
+  id: bigint
   // File or folder name
   name: string
   // 'folder', 'text', 'binary', 'image', 'video', 'audio', etc.
@@ -21,7 +22,6 @@ type Node = {
   content?: string
 
   // metadata
-  _id?: string
   _prev?: Node
   _next?: Node
   _opened?: boolean

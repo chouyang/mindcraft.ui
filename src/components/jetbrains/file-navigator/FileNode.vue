@@ -49,7 +49,7 @@ watch(
   <div
     @click.stop.prevent="selectNode"
     :class="{ highlighted: node._highlighted, 'file-node': true }"
-    :id="node._id"
+    :id="`${node.id}`"
     :tabindex="node._highlighted ? 0 : -1"
     ref="focusable"
   >
