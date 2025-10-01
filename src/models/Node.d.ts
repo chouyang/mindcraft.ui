@@ -18,6 +18,13 @@ type Node = {
   extension?: string
   // Level of indent (for rendering purposes)
   indent?: number
+  weight?: number
+  views?: number
+  likes?: number
+  favorite?: number
+  tags?: string[]
+  created_at?: string
+  updated_at?: string
   // For files, the content of the file
   content?: string
 

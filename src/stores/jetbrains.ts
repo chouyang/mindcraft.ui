@@ -111,7 +111,7 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
     }
     return api
       .request({
-        url: `/v1/node${file.path}/${file.name}`.replace('//', '/'),
+        url: `/v1/nodes/${file.id}`,
         method: 'GET',
         params: {},
       })
@@ -144,7 +144,7 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
 
     return api
       .request({
-        url: `/v1/node`,
+        url: `/v1/nodes`,
         method: 'POST',
         data: payload,
       })
@@ -162,8 +162,11 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
   async function getChildren(node: Node): Promise<AxiosResponse<Response<Node>>> {
     return api
       .request({
-        url: `/v1/nodes${node.path}/${node.name}`.replace('//', '/'),
+        url: `/v1/nodes`,
         method: 'GET',
+        params: {
+          path: `${node.path}/${node.name}`.replace(/\/+/g, '/'),
+        }
       })
       .then((response: AxiosResponse<Response<Node>>): AxiosResponse<Response<Node>> => {
         if (response.data.code === 0) {
@@ -197,11 +200,20 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
       return Promise.reject(new Error('No file opened'))
     }
 
+    const o = openedFile.value
     return api
       .request({
-        url: `/v1/node${openedFile.value.path}/${openedFile.value.name}`.replace('//', '/'),
+        url: `/v1/nodes/${o.id}`,
         method: 'PUT',
         data: {
+          name: o.name,
+          icon: o.icon,
+          path: o.path,
+          type: o.type,
+          extension: o.extension,
+          tags: o.tags,
+          caption: o.caption,
+          weight: o.weight,
           content: editedContent.value,
         },
       })

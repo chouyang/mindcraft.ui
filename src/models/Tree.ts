@@ -122,7 +122,6 @@ export default class Tree implements Iterable<Node> {
         this.highlighted = n
 
         nextTick().then(() => {
-
           // Keep highlighted node within visible area
           // TODO: Avoid accessing DOM directly
           const el = document.getElementById(`${n.id}`)
@@ -432,7 +431,6 @@ export default class Tree implements Iterable<Node> {
    * @private
    */
   public async attachNextTo(node: Node, target: Node): Promise<void> {
-
     // if node is a folder and opened, set target as its child
     if (node.type === 'folder' && node._opened) {
       target._parent = node
