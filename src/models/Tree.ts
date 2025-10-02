@@ -110,7 +110,9 @@ export default class Tree implements Iterable<Node> {
    *
    * @returns void
    */
-  public highlight(node: Node) {
+  public highlight(node?: Node) {
+    if (!node) return
+
     for (const n of this) {
       if (n.id == node.id) {
         // Set highlighted node
@@ -172,7 +174,9 @@ export default class Tree implements Iterable<Node> {
    *
    * @returns void
    */
-  public async open(node: Node) {
+  public async open(node?: Node) {
+    if (!node) return
+
     // Avoid re-opening node
     if (node.type === 'folder' && node._opened) {
       return

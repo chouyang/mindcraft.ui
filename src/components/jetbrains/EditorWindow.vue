@@ -31,6 +31,8 @@ const inEditMode = computed(() => jetBrainsStore.inEditMode)
 
   width: var(--editor-window-width);
   height: var(--editor-window-height);
+  color: var(--file-viewer-text-color);
+  background-color: var(--file-viewer-background-color);
 
   display: flex;
   flex-direction: row;
