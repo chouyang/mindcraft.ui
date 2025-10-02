@@ -1,17 +1,27 @@
 // Root folders for the file navigator
 export default [
   {
-    id: BigInt(10),
+    id: 'root-1',
+    name: 'mindcraft.chronicles',
+    type: 'folder',
+    icon: 'nodes/folder',
+    path: '/',
+    caption: '~/Workspace/starvale.io/mindcraft.chronicles',
+    indent: 0,
+    _opened: true,
+  },
+  {
+    id: 'root-2',
     name: 'mindcraft.nodes',
     type: 'folder',
     icon: 'nodes/folder',
     path: '/',
     caption: '~/Workspace/starvale.io/mindcraft.nodes',
     indent: 0,
-    _opened: true,
+    _opened: false,
   },
   {
-    id: BigInt(20),
+    id: 'root-3',
     name: 'mindcraft.protocols',
     type: 'folder',
     icon: 'nodes/folder',
@@ -21,7 +31,7 @@ export default [
     _opened: false,
   },
   {
-    id: BigInt(30),
+    id: 'root-4',
     name: 'mindcraft.garage',
     type: 'folder',
     icon: 'nodes/folder',
@@ -31,7 +41,7 @@ export default [
     _opened: false,
   },
   {
-    id: BigInt(40),
+    id: 'root-5',
     name: 'mindcraft.oss',
     type: 'folder',
     icon: 'nodes/folder',
@@ -41,7 +51,17 @@ export default [
     _opened: false,
   },
   {
-    id: BigInt(50),
+    id: 'root-6',
+    name: 'mindcraft.servers',
+    type: 'folder',
+    icon: 'nodes/folder',
+    path: '/',
+    caption: '~/Workspace/starvale.io/mindcraft.servers',
+    indent: 0,
+    _opened: false,
+  },
+  {
+    id: 'root-7',
     name: 'mindcraft.ui',
     type: 'folder',
     icon: 'nodes/folder',

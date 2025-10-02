@@ -164,7 +164,7 @@ watch(showNewNodePopup, (newVal) => {
 
     <!-- new file popup modal -->
     <div class="new-file-popup" v-if="showNewNodePopup">
-      <div class="title">New File</div>
+      <div class="title">New {{ newNodeType.charAt(0).toUpperCase() }}{{ newNodeType.slice(1).toLowerCase() }}</div>
       <input
         class="input"
         type="text"

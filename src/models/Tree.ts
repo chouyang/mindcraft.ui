@@ -103,10 +103,6 @@ export default class Tree implements Iterable<Node> {
     }
   }
 
-  public getId(node: Node): string {
-    return `id-${node.name.split('.').join('')}-${Math.random().toString(36).slice(2, 9)}`
-  }
-
   /**
    * Highlight a node and unhighlight all others
    *
@@ -185,7 +181,7 @@ export default class Tree implements Iterable<Node> {
     // For file, open it in editor component
     if (node.type !== 'folder') {
       const openedFile = store.openedFile
-      store.getDetail(node).then(() => {
+      await store.getDetail(node).then(() => {
         node._opened = true
         if (openedFile.name) {
           store.addFileToHistory(openedFile)
@@ -352,20 +348,28 @@ export default class Tree implements Iterable<Node> {
    */
   public findAPositionAndAttach(relative: Node, attachment: Node): void {
     let current = relative
+    let parent = relative
     if (current.type === 'folder') {
+      // TRY WHEN IT'S OPENED
       if (!current._opened) {
         this.open(current).then(() => this.findAPositionAndAttach(relative, attachment))
         return
       }
 
-      // apply rule 1.a: attach as the first child if no child
-      if (!current._firstChild?.name) {
-        this.attachNextTo(current, attachment)
+      // NO CHILDREN
+      // apply rule 1.a: attach as the first child if no children
+      if (!current._firstChild) {
+        this.attachNextTo(current, attachment, current)
         return
       }
+
+      parent = current
+      // FIRST CHILD
       // start from the first child, even if it's not opened
       current = current._firstChild
     } else {
+      parent = current._parent!
+      // FIRST CHILD
       // start from the first sibling
       if (current._parent!._firstChild) {
         current = current._parent!._firstChild
@@ -373,54 +377,44 @@ export default class Tree implements Iterable<Node> {
     }
 
     while (current._next) {
-      // reached the end of children
-      if (current._next.indent! < current.indent!) {
-        this.attachNextTo(current, attachment)
-        return
-      }
-
       // skip deeper levels
-      if (current.indent! > relative.indent! + 1) {
+      if (current.indent! > parent.indent! + 1) {
         current = current._next
         continue
       }
 
-      // reached the end of the relative's children
-      if (current.indent! < relative.indent!) {
-        this.attachNextTo(current._prev!, attachment)
+      // reached end of folder children
+      if (current.type != 'folder' && attachment.type === 'folder') {
+        this.attachNextTo(current._prev!, attachment, parent)
         return
       }
 
-      // apply rule 1.a: skip folder if attachment is a file
-      if (current.type === 'folder' && attachment.type !== 'folder') {
-        current = current._next
-        continue
-      }
-
-      // apply rule 1.b: attach immediately
-      if (current.type !== 'folder' && attachment.type === 'folder') {
-        this.attachNextTo(current._prev!, attachment)
+      // reached the end of children
+      if (current.indent! <= parent.indent!) {
+        this.attachNextTo(current._prev!, attachment, parent)
         return
       }
 
-      if (current.name === attachment.name) {
-        // avoid duplicate names
-        console.warn('Node with the same name already exists:', attachment.name)
-        return
-      }
+      // got a matched position
+      if (attachment.name.localeCompare(current.name) < 0) {
+        // when they are of the same type, attach before current
+        if (current.type === attachment.type) {
+          this.attachNextTo(current._prev!, attachment, parent)
+          return
+        }
 
-      // got a match position
-      if (attachment.name.localeCompare(current.name) < 0 && current._prev) {
-        this.attachNextTo(current._prev, attachment)
-        return
+        // apply rule 1.a: attach before the first file child
+        if (attachment.type === 'folder') {
+          this.attachNextTo(current._prev!, attachment, parent)
+          return
+        }
       }
 
       current = current._next
     }
 
-    // reached the end of the list, attach to the end
-    console.log('Reached the end of the list, attaching to the end', current.name)
-    this.attachNextTo(current, attachment)
+    // reached the end of the list, attach to last child
+    this.attachNextTo(parent._lastChild!, attachment, parent)
   }
 
   /**
@@ -428,48 +422,40 @@ export default class Tree implements Iterable<Node> {
    *
    * @param node
    * @param target
+   * @param parent
    * @private
    */
-  public async attachNextTo(node: Node, target: Node): Promise<void> {
-    // if node is a folder and opened, set target as its child
-    if (node.type === 'folder' && node._opened) {
-      target._parent = node
-      target.indent = (node.indent || 0) + 1
-      node._firstChild = target
-      if (!node._lastChild) {
-        node._lastChild = target
+  public async attachNextTo(node: Node, target: Node, parent: Node): Promise<void> {
+    const store = useJetBrainsStore()
+
+    target.path = (parent.path + '/' + parent.name).replace('//', '/')
+    target.indent = parent.indent! + 1
+    target._parent = parent
+
+    if (!parent._firstChild) {
+      parent._firstChild = target
+    }
+    if (!parent._lastChild || parent._lastChild.id === node.id) {
+      parent._lastChild = target
+    }
+
+    await store.createNode(target).then((r) => {
+      if (r.data.code !== 0) {
+        console.error('Failed to create node:', r.data.message)
+        return
       }
-    } else {
-      target._parent = node._parent
-      target.indent = node.indent
-    }
 
-    if (target.indent! > node.indent!) {
-      target.path = (node.path + '/' + node.name).replace('//', '/')
-    } else {
-      target.path = node.path
-    }
+      target = Object.assign(target, r.data.payload)
 
-    await useJetBrainsStore()
-      .createNode(target)
-      .then((r) => {
-        if (r.data.code !== 0) {
-          console.error('Failed to create node:', r.data.message)
-          return
-        }
+      const n = node._next
+      node._next = target
+      target._prev = node
+      target._next = n
+      if (n) {
+        n._prev = target
+      }
 
-        target = Object.assign(target, r.data.payload)
-
-        const n = node._next
-        node._next = target
-        target._prev = node
-        target._next = n
-        if (n) {
-          n._prev = target
-        }
-
-        console.log(target)
-        this.tryOpen(target).then(() => this.highlight(target))
-      })
+      this.tryOpen(target).then(() => this.highlight(target))
+    })
   }
 }
