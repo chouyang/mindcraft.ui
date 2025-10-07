@@ -3,7 +3,7 @@
  * A file can be an article, a media file, source code or any kind of files
  */
 type Node = {
-  id: bigint
+  id: string
   // File or folder name
   name: string
   // 'folder', 'text', 'binary', 'image', 'video', 'audio', etc.

@@ -1,19 +1,13 @@
 <script lang="ts" setup>
 import FileTree from '@/components/jetbrains/file-navigator/FileTree.vue'
 import { useJetBrainsStore } from '@/stores/jetbrains'
-import type Node from '@/models/Node'
 
-import { reactive } from 'vue'
 import Icon from '@/models/Icon.ts'
+import { computed } from 'vue'
 
 const jetBrainsStore = useJetBrainsStore()
 
-// Build and initialize the file tree
-const fileTree = reactive(jetBrainsStore.tree)
-jetBrainsStore.getChildren(fileTree.root as Node).then(() => {
-  fileTree.highlight(fileTree.root?._lastChild as Node)
-  fileTree.tryOpen(fileTree.root?._lastChild as Node)
-})
+const fileTree = computed(() => jetBrainsStore.tree)
 </script>
 
 <template>
@@ -36,7 +30,6 @@ jetBrainsStore.getChildren(fileTree.root as Node).then(() => {
   line-height: var(--global-light-height);
   color: var(--file-navigator-text-color);
   background-color: var(--file-navigator-background-color);
-  overflow: auto;
 
   position: fixed;
   top: var(--file-navigator-top);
@@ -44,7 +37,9 @@ jetBrainsStore.getChildren(fileTree.root as Node).then(() => {
 
   width: var(--file-navigator-width);
   height: var(--file-navigator-height);
-  padding: 1rem;
+  padding-left: 1rem;
+
+  overflow: hidden auto;
 
   & .section {
     font-weight: bold;

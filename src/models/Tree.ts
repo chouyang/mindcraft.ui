@@ -2,6 +2,8 @@ import type Node from './Node'
 import { useJetBrainsStore } from '@/stores/jetbrains.ts'
 import { nextTick } from 'vue'
 
+let navigator: number | undefined = undefined
+
 /**
  * Tree structure to manage nodes
  *
@@ -39,24 +41,6 @@ export default class Tree implements Iterable<Node> {
    * Currently highlighted node
    */
   highlighted?: Node
-
-  /**
-   * Construct the tree with nodes data
-   *
-   * @param nodes Array of root nodes to initialize the tree
-   */
-  constructor(nodes: Array<Node>) {
-    if (!nodes || !nodes.length) {
-      return
-    }
-
-    this.link(nodes, undefined)
-    // Open and highlight the last child node of root by default
-    if (this.root?._lastChild) {
-      this.open(this.root._lastChild)
-      this.highlight(this.root._lastChild)
-    }
-  }
 
   /**
    * Link nodes to their parent or tree root, and set up relationships
@@ -114,7 +98,7 @@ export default class Tree implements Iterable<Node> {
     if (!node) return
 
     for (const n of this) {
-      if (n.id == node.id) {
+      if (n == node) {
         // Set highlighted node
         n._highlighted = true
         this.highlighted = n
@@ -124,7 +108,10 @@ export default class Tree implements Iterable<Node> {
           // TODO: Avoid accessing DOM directly
           const el = document.getElementById(`${n.id}`)
           if (el) {
-            el.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+            el.scrollIntoView({
+              block: 'nearest',
+              behavior: 'smooth',
+            })
           }
         })
       } else {
@@ -264,6 +251,14 @@ export default class Tree implements Iterable<Node> {
    * @returns void
    */
   public async navigateNode(event: KeyboardEvent) {
+    // Debounce navigation to avoid rapid key presses
+    if (navigator) {
+      return
+    }
+    navigator = window.setTimeout(() => {
+      navigator = undefined
+    }, 100)
+
     const node = this.highlighted
     if (!node) return
     switch (event.key) {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type Node from '@/models/Node.d.ts'
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import Icon from '@/models/Icon.ts'
 
 const props = defineProps({
@@ -15,8 +15,8 @@ const emit = defineEmits<{
   (e: 'opened', node: Node): void
 }>()
 
-// Indentation based on tree depth
-const indent = ref(props.node.indent)
+// Indentation based on tree depth - make it reactive to node changes
+const indent = computed(() => props.node.indent || 0)
 
 // Handle single and double click
 const firstClick = ref(false)
@@ -33,13 +33,15 @@ const selectNode = () => {
   }, 400)
 }
 
-// Auto-focus when highlighted with keyboard
+// Autofocus when highlighted with keyboard
 const focusable = ref<HTMLElement | null>(null)
 watch(
   () => props.node._highlighted,
   (newVal) => {
     if (newVal && focusable.value) {
-      focusable.value.focus()
+      focusable.value.focus({
+        preventScroll: true,
+      })
     }
   },
 )
@@ -76,7 +78,6 @@ watch(
 .file-node {
   padding: 0.25rem 1rem 0.25rem calc(1.2rem * v-bind(indent));
   cursor: pointer;
-  overflow: hidden;
   white-space: nowrap;
 
   display: flex;
@@ -84,8 +85,6 @@ watch(
   justify-content: flex-start;
 
   user-select: none;
-
-  width: 100%;
 
   &.highlighted {
     background-color: var(--file-node-highlighted-background-color);

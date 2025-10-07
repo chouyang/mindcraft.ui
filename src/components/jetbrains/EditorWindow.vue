@@ -16,8 +16,8 @@ const inEditMode = computed(() => jetBrainsStore.inEditMode)
 <template>
   <div class="editor-window">
     <MarkdownViewer :full-width="!inEditMode" v-if="isMarkdown" />
-    <FileViewer :full-width="!inEditMode" v-else />
-    <FileEditor :full-width="false" v-if="inEditMode" />
+    <FileViewer :full-width="true" v-if="!isMarkdown && !inEditMode" />
+    <FileEditor :full-width="!isMarkdown" v-if="inEditMode" />
   </div>
 </template>
 

@@ -1,18 +1,16 @@
 <script lang="ts" setup>
-import { nextTick, ref, watch } from 'vue'
+import { reactive, ref } from 'vue'
 import { computed } from 'vue'
 import { useJetBrainsStore } from '@/stores/jetbrains'
 import Icon from '@/models/Icon.ts'
 import { useDark, useToggle } from '@vueuse/core'
+import Menu from '@/models/Menu.ts'
 
 const jetBrainsStore = useJetBrainsStore()
 const node = computed(() => jetBrainsStore.openedFile)
 
-// State for showing/hiding the file history dropdown
-const fhShowed = ref(false)
-
-// Track which top-level menu is open
-const openMenu = ref<string | null>(null)
+const newNodePopup = ref<HTMLInputElement | null>(null)
+const menu = reactive(new Menu(newNodePopup))
 
 // Dark mode state and toggle function
 const isDarkMode = useDark()
@@ -21,8 +19,8 @@ const toggleDarkMode = useToggle(isDarkMode)
 // Toggle file history dropdown and close any open top-level menu
 const toggleFileHistory = () => {
   // Close any open top-level menu when toggling file history
-  openMenu.value = null
-  fhShowed.value = !fhShowed.value
+  menu.openMenu = null
+  menu.fhShowed = !menu.fhShowed
 }
 
 // Toggle edit mode in the store
@@ -36,77 +34,16 @@ const fileHistory = computed(() => jetBrainsStore.fileHistory)
 // Navigate to a file from history and close the dropdown
 const visitHistory = (file: typeof node.value) => {
   jetBrainsStore.tree.open(file)
-  fhShowed.value = false
+  menu.fhShowed = false
 }
 
-// Simple menu item definitions for each top-level menu
-const menuItems: Record<string, { action: string; effect: (callback?: () => void) => void }[]> = {
-  File: [
-    {
-      action: 'New File',
-      effect: () => {
-        newNodeType.value = 'file'
-        showNewNodePopup.value = true
-      },
-    },
-    {
-      action: 'New Folder',
-      effect: () => {
-        newNodeType.value = 'folder'
-        showNewNodePopup.value = true
-      },
-    },
-    {
-      action: 'Save',
-      effect: () => {},
-    },
-    {
-      action: 'Close',
-      effect: () => {},
-    },
-  ],
-  Tools: [
-    {
-      action: 'Settings',
-      effect: () => {},
-    },
-  ],
-  Help: [
-    // 'Contact',
-    // 'About'
-    {
-      action: 'About',
-      effect: () => {},
-    },
-    {
-      action: 'Contact',
-      effect: () => {},
-    },
-  ],
-}
-
+// Create a new node using the store and close the popup
 const createNode = () => {
-  showNewNodePopup.value = false
-  if (!newNodePopup.value?.value) return
-  jetBrainsStore.tree.createNode(newNodePopup.value.value, newNodeType.value)
-  newNodePopup.value.value = ''
+  menu.showNewNodePopup = false
+  if (!menu.popup) return
+  jetBrainsStore.tree.createNode(menu.popup.value, menu.newNodeType)
+  menu.popup = null
 }
-
-const toggleMenu = (name: string) => {
-  // Close file history when opening a top-level menu
-  fhShowed.value = false
-  openMenu.value = openMenu.value === name ? null : name
-}
-
-const showNewNodePopup = ref(false)
-const newNodeType = ref<'file' | 'folder'>('file')
-const newNodePopup = ref<HTMLInputElement | null>(null)
-// Autofocus the new file input when the popup is shown
-watch(showNewNodePopup, (newVal) => {
-  if (newVal) {
-    nextTick(() => newNodePopup.value?.focus())
-  }
-})
 </script>
 
 <template>
@@ -116,13 +53,13 @@ watch(showNewNodePopup, (newVal) => {
       <div class="brand">MindCraft</div>
       <ul class="bar">
         <li
-          v-for="(items, index) in menuItems"
+          v-for="(items, index) in menu.items"
           :key="index"
           class="item"
-          @click.stop="toggleMenu(index)"
+          @click.stop="menu.toggleMenu(index)"
         >
           {{ index }}
-          <div class="dropdown" v-if="openMenu === index">
+          <div class="dropdown" v-if="menu.openMenu === index">
             <div
               class="entry"
               v-for="(item, idx) in items"
@@ -141,9 +78,9 @@ watch(showNewNodePopup, (newVal) => {
       <div class="current-file" @click="toggleFileHistory" v-if="node.name">
         <img :src="Icon(node.icon || '')" alt="icon" />
         {{ node.name }}
-        <img :src="Icon(fhShowed ? 'fold' : 'unfold')" alt="dropdown" />
+        <img :src="Icon(menu.fhShowed ? 'fold' : 'unfold')" alt="dropdown" />
       </div>
-      <div class="list" v-if="fhShowed">
+      <div class="list" v-if="menu.fhShowed">
         <div v-for="(file, index) in fileHistory" :key="index" @click="visitHistory(file)">
           <img :src="Icon(file.icon)" alt="" />
           {{ file.name }}
@@ -163,15 +100,17 @@ watch(showNewNodePopup, (newVal) => {
     </div>
 
     <!-- new file popup modal -->
-    <div class="new-file-popup" v-if="showNewNodePopup">
-      <div class="title">New {{ newNodeType.charAt(0).toUpperCase() }}{{ newNodeType.slice(1).toLowerCase() }}</div>
+    <div class="new-file-popup" v-if="menu.showNewNodePopup">
+      <div class="title">
+        New {{ menu.newNodeType.charAt(0).toUpperCase() }}{{ menu.newNodeType.slice(1).toLowerCase() }}
+      </div>
       <input
         class="input"
         type="text"
         placeholder="Name"
         ref="newNodePopup"
         @keyup.enter="createNode()"
-        @blur="showNewNodePopup = false"
+        @blur="menu.showNewNodePopup = false"
       />
     </div>
   </div>
@@ -189,9 +128,9 @@ watch(showNewNodePopup, (newVal) => {
   top: 0;
   left: 0;
 
-  padding: 0 1rem;
+  padding: var(--menubar-padding);
 
-  width: var(--menubar-width);
+  width: calc(var(--menubar-width) - 2rem);
   height: var(--menubar-height);
   line-height: var(--menubar-height);
 
@@ -303,6 +242,8 @@ watch(showNewNodePopup, (newVal) => {
       gap: 0.25rem;
       min-width: 10rem;
       min-height: 2rem;
+
+      line-height: 2rem;
 
       & > div {
         padding: 0 1.3rem;

@@ -1,12 +1,12 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import type Node from '@/models/Node'
-import api from '@/api/request.ts'
 import type { AxiosResponse } from 'axios'
 import Tree from '@/models/Tree'
 
+import nodeApi from '@/api/node'
+
 import languages from '@/models/Language'
-import roots from '@/stores/roots.ts'
 
 /**
  * Standard API response structure
@@ -49,10 +49,16 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
   /**
    * @var tree File tree structure
    */
-  const tree = ref(
-    // Create the Tree with some root nodes
-    new Tree(roots),
-  )
+  const tree = ref(new Tree())
+
+  loadRoots().then((nodes) => {
+    tree.value.link(nodes, undefined)
+    // Open and highlight the last child node of root by default
+    if (tree.value.root?._lastChild) {
+      tree.value.open(tree.value.root._lastChild)
+      tree.value.highlight(tree.value.root._lastChild)
+    }
+  })
 
   /**
    * @var language Programming language of the currently opened file, for syntax highlighting
@@ -86,6 +92,10 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
     }
   }
 
+  async function loadRoots(): Promise<Array<Node>> {
+    return nodeApi.getRootNodes()
+  }
+
   /**
    * Fetch detailed info of a file node, usually for opening in the editor
    *
@@ -109,12 +119,8 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
         config: {},
       } as AxiosResponse<Response<Node>>)
     }
-    return api
-      .request({
-        url: `/v1/nodes/${file.id}`,
-        method: 'GET',
-        params: {},
-      })
+
+    return nodeApi.getDetail(file)
       .then((response: AxiosResponse<Response<Node>>): AxiosResponse<Response<Node>> => {
         if (response.data.code === 0) {
           const n = response.data.payload as Node
@@ -135,22 +141,7 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
    * @param node
    */
   async function createNode(node: Node): Promise<AxiosResponse<Response<Node>>> {
-    // Avoid sending reactive proxies/circular structures to axios
-    const payload = {
-      name: node.name,
-      type: node.type,
-      path: node.path,
-    } as Partial<Node>
-
-    return api
-      .request({
-        url: `/v1/nodes`,
-        method: 'POST',
-        data: payload,
-      })
-      .then((response: AxiosResponse<Response<Node>>): AxiosResponse<Response<Node>> => {
-        return response
-      })
+    return nodeApi.createNode(node)
   }
 
   /**
@@ -160,14 +151,7 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
    * @param node Folder node to fetch children for
    */
   async function getChildren(node: Node): Promise<AxiosResponse<Response<Node>>> {
-    return api
-      .request({
-        url: `/v1/nodes`,
-        method: 'GET',
-        params: {
-          path: `${node.path}/${node.name}`.replace(/\/+/g, '/'),
-        }
-      })
+    return nodeApi.getChildren(node)
       .then((response: AxiosResponse<Response<Node>>): AxiosResponse<Response<Node>> => {
         if (response.data.code === 0) {
           const children = response.data.payload as Node[]
@@ -200,23 +184,7 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
       return Promise.reject(new Error('No file opened'))
     }
 
-    const o = openedFile.value
-    return api
-      .request({
-        url: `/v1/nodes/${o.id}`,
-        method: 'PUT',
-        data: {
-          name: o.name,
-          icon: o.icon,
-          path: o.path,
-          type: o.type,
-          extension: o.extension,
-          tags: o.tags,
-          caption: o.caption,
-          weight: o.weight,
-          content: editedContent.value,
-        },
-      })
+    return nodeApi.saveContent(openedFile.value, editedContent.value)
       .then((response: AxiosResponse<Response<Node>>): AxiosResponse<Response<Node>> => {
         if (response.data.code === 0) {
           // Update the opened file content and mark as clean
@@ -242,7 +210,6 @@ export const useJetBrainsStore = defineStore('jetbrains', () => {
    */
   function toggleEditMode(isEdit?: boolean) {
     inEditMode.value = typeof isEdit === 'undefined' ? !inEditMode.value : isEdit
-    console.log('inEditMode', inEditMode.value)
   }
 
   return {

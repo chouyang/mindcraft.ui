@@ -25,7 +25,7 @@ defineProps({
 
 <style scoped lang="scss">
 .file-tree {
-  width: 100%;
-  height: 100%;
+  width: var(--file-navigator-width);
+  height: auto;
 }
 </style>

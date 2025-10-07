@@ -32,7 +32,7 @@ const widthDivider = computed(() => (props.fullWidth ? 1 : 2))
 <template>
   <div class="file-viewer" v-if="node?.type === 'text'">
     <div class="line" v-for="(line, index) in lines" :key="index">
-      <div class="index">{{ index + 1 }}</div>
+      <div class="line-number">{{ index + 1 }}</div>
       <pre class="code-wrapper"><code class="code" v-html="line" /></pre>
     </div>
   </div>
@@ -83,21 +83,20 @@ const widthDivider = computed(() => (props.fullWidth ? 1 : 2))
     justify-content: flex-start;
     gap: 0.2rem;
 
-    & .index {
+    font-size: var(--editor-window-font-size);
+    line-height: var(--editor-window-line-height);
+
+    & .line-number {
       user-select: none;
 
-      width: 4rem;
+      width: var(--editor-window-gutter-width);
       padding-right: 2rem;
       text-align: right;
-      font-size: 0.8rem;
-      color: var(--file-viewer-index-text-color);
+      color: var(--file-editor-index-text-color);
       border-right: 1px solid var(--file-editor-border-color);
     }
 
     & .code-wrapper {
-      line-height: 1rem;
-      height: 1rem;
-
       tab-size: 4;
     }
   }

@@ -68,7 +68,7 @@ watch(
 <template>
   <div class="file-editor">
     <div class="editor-container">
-      <div class="line-numbers" ref="lineNumbersRef" @wheel.prevent="handleGutterWheel">
+      <div class="gutter" ref="lineNumbersRef" @wheel.prevent="handleGutterWheel">
         <div
           v-for="(line, index) in jetBrainsStore.editedContent.split('\n')"
           :key="index"
@@ -79,6 +79,7 @@ watch(
       </div>
       <textarea
         ref="editorArea"
+        name="code-editor"
         v-model="jetBrainsStore.editedContent"
         @input="handleContentChange"
         @keydown="handleKeyDown"
@@ -112,6 +113,10 @@ watch(
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-end;
+  font-size: var(--editor-window-font-size);
+  line-height: var(--editor-window-line-height);
+
+  font-variant-numeric: tabular-nums;
 
   & .editor-container {
     display: flex;
@@ -119,45 +124,52 @@ watch(
     width: calc(var(--editor-window-width) / v-bind(widthDivider));
     height: var(--editor-window-height);
     overflow: hidden;
-  }
 
-  & .line-numbers {
-    user-select: none;
+    & .gutter {
+      user-select: none;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
 
-    width: 4rem;
-    padding-right: 2rem;
-    text-align: right;
-    font-size: 0.8rem;
-    color: var(--file-viewer-index-text-color);
-    border-right: 1px solid var(--file-editor-border-color);
-
-    & .line-number {
-      line-height: 1.2rem;
-      height: 1.2rem;
-      padding-right: 0.5rem;
-    }
-  }
-
-  & .code-editor {
-    flex: 1;
-    background-color: transparent;
-    color: var(--file-editor-text-color);
-    border: none;
-    outline: none;
-    padding: 0.5rem;
-    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-    font-size: 0.9rem;
-    line-height: 1.2rem;
-    resize: none;
-    tab-size: 4;
-
-    &::placeholder {
-      color: var(--file-editor-placeholder-color, #666);
+      & .line-number {
+        user-select: none;
+        width: var(--editor-window-gutter-width);
+        padding-right: 2rem;
+        text-align: right;
+        color: var(--file-editor-index-text-color);
+        border-right: 1px solid var(--file-editor-border-color);
+      }
     }
 
-    &:focus {
+    & .code-editor {
+      flex: 1;
+      background-color: transparent;
+      color: var(--file-editor-text-color);
+      border: none;
       outline: none;
+      margin: 0;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      resize: none;
+      tab-size: 4;
+      padding: 0 0 0 0.2rem;
+
+      font-size: var(--editor-window-font-size);
+      line-height: var(--editor-window-line-height);
+
+      &::placeholder {
+        color: var(--file-editor-placeholder-color, #666);
+      }
+
+      &:focus {
+        outline: none;
+      }
     }
+
   }
 
   & .editor-status {
