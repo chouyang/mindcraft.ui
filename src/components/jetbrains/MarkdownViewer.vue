@@ -56,6 +56,7 @@ const widthDivider = computed(() => (props.fullWidth ? 1 : 2))
   height: var(--editor-window-height);
 
   padding-left: var(--editor-window-gutter-width);
+  padding-top: 1rem;
 
   display: flex;
   flex-direction: column;

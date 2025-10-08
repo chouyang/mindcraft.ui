@@ -26,6 +26,25 @@ const handleContentChange = (event: Event) => {
 
 // Handle keyboard shortcuts
 const handleKeyDown = (event: KeyboardEvent) => {
+  // Handle Tab key to insert tab character instead of shifting focus
+  if (event.key === 'Tab') {
+    event.preventDefault()
+    const target = event.target as HTMLTextAreaElement
+    const start = target.selectionStart
+    const end = target.selectionEnd
+    const value = target.value
+    
+    // Insert tab character at cursor position
+    const newValue = value.substring(0, start) + '\t' + value.substring(end)
+    jetBrainsStore.updateContent(newValue)
+    
+    // Set cursor position after the inserted tab
+    setTimeout(() => {
+      target.selectionStart = target.selectionEnd = start + 1
+    }, 0)
+    return
+  }
+  
   // Ctrl+S or Cmd+S to save
   if ((event.ctrlKey || event.metaKey) && event.key === 's') {
     event.preventDefault()

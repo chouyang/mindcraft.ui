@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import FileEditor from '@/components/jetbrains/FileEditor.vue'
 import FileViewer from '@/components/jetbrains/FileViewer.vue'
+import HtmlViewer from '@/components/jetbrains/HtmlViewer.vue'
 import MarkdownViewer from '@/components/jetbrains/MarkdownViewer.vue'
 import { computed } from 'vue'
 import { useJetBrainsStore } from '@/stores/jetbrains'
@@ -9,6 +10,13 @@ const jetBrainsStore = useJetBrainsStore()
 const isMarkdown = computed(
   () => (jetBrainsStore.openedFile?.extension || '').toLowerCase() === 'md',
 )
+const isHtml = computed(
+  () => {
+    const ext = (jetBrainsStore.openedFile?.extension || '').toLowerCase()
+
+    return ext === 'html' || ext === 'htm'
+  },
+)
 
 const inEditMode = computed(() => jetBrainsStore.inEditMode)
 </script>
@@ -16,8 +24,9 @@ const inEditMode = computed(() => jetBrainsStore.inEditMode)
 <template>
   <div class="editor-window">
     <MarkdownViewer :full-width="!inEditMode" v-if="isMarkdown" />
-    <FileViewer :full-width="true" v-if="!isMarkdown && !inEditMode" />
-    <FileEditor :full-width="!isMarkdown" v-if="inEditMode" />
+    <HtmlViewer :full-width="!inEditMode" v-if="isHtml" />
+    <FileViewer :full-width="true" v-if="!isMarkdown && !isHtml && !inEditMode" />
+    <FileEditor :full-width="!isMarkdown && !isHtml" v-if="inEditMode" />
   </div>
 </template>
 
